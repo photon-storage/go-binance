@@ -458,3 +458,8 @@ func (c *Client) NewChangePositionModeService() *ChangePositionModeService {
 func (c *Client) NewGetPositionModeService() *GetPositionModeService {
 	return &GetPositionModeService{c: c}
 }
+
+// NewPremiumIndexService init premium index service
+func (c *Client) NewPremiumIndexService() *PremiumIndexService {
+	return &PremiumIndexService{c: c}
+}
