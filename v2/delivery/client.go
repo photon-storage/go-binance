@@ -463,3 +463,8 @@ func (c *Client) NewGetPositionModeService() *GetPositionModeService {
 func (c *Client) NewPremiumIndexService() *PremiumIndexService {
 	return &PremiumIndexService{c: c}
 }
+
+// NewDepthService init depth service
+func (c *Client) NewDepthService() *DepthService {
+	return &DepthService{c: c}
+}
