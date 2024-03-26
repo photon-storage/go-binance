@@ -2,6 +2,7 @@ package binance
 
 import (
 	"context"
+	stdjson "encoding/json"
 	"net/http"
 )
 
@@ -235,6 +236,55 @@ func (s *CancelMarginOrderService) Do(ctx context.Context, opts ...RequestOption
 		return nil, err
 	}
 	return res, nil
+}
+
+// CancelMarginOpenOrdersService cancel all active orders on a symbol.
+type CancelMarginOpenOrdersService struct {
+	c      *Client
+	symbol string
+}
+
+// Symbol set symbol
+func (s *CancelMarginOpenOrdersService) Symbol(symbol string) *CancelMarginOpenOrdersService {
+	s.symbol = symbol
+	return s
+}
+
+// Do send request
+func (s *CancelMarginOpenOrdersService) Do(ctx context.Context, opts ...RequestOption) (res *CancelOpenOrdersResponse, err error) {
+	r := &request{
+		method:   http.MethodDelete,
+		endpoint: "/sapi/v1/margin/openOrders",
+		secType:  secTypeSigned,
+	}
+	r.setParam("symbol", s.symbol)
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return &CancelOpenOrdersResponse{}, err
+	}
+	rawMessages := make([]*stdjson.RawMessage, 0)
+	err = json.Unmarshal(data, &rawMessages)
+	if err != nil {
+		return &CancelOpenOrdersResponse{}, err
+	}
+	cancelOpenOrdersResponse := new(CancelOpenOrdersResponse)
+	for _, j := range rawMessages {
+		o := new(CancelOrderResponse)
+		if err := json.Unmarshal(*j, o); err != nil {
+			return &CancelOpenOrdersResponse{}, err
+		}
+		// Non-OCO orders guaranteed to have order list ID of -1
+		if o.OrderListID == -1 {
+			cancelOpenOrdersResponse.Orders = append(cancelOpenOrdersResponse.Orders, o)
+			continue
+		}
+		oco := new(CancelOCOResponse)
+		if err := json.Unmarshal(*j, oco); err != nil {
+			return &CancelOpenOrdersResponse{}, err
+		}
+		cancelOpenOrdersResponse.OCOOrders = append(cancelOpenOrdersResponse.OCOOrders, oco)
+	}
+	return cancelOpenOrdersResponse, nil
 }
 
 // GetMarginOrderService get an order
