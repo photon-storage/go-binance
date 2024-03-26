@@ -684,6 +684,11 @@ func (c *Client) NewCancelMarginOrderService() *CancelMarginOrderService {
 	return &CancelMarginOrderService{c: c}
 }
 
+// NewCancelMarginOpenOrdersService init cancel margin open orders service
+func (c *Client) NewCancelMarginOpenOrdersService() *CancelMarginOpenOrdersService {
+	return &CancelMarginOpenOrdersService{c: c}
+}
+
 // NewCreateMarginOCOService init creating margin order service
 func (c *Client) NewCreateMarginOCOService() *CreateMarginOCOService {
 	return &CreateMarginOCOService{c: c}
