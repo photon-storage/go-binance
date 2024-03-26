@@ -674,6 +674,11 @@ func (c *Client) NewMarginRepayService() *MarginRepayService {
 	return &MarginRepayService{c: c}
 }
 
+// NewMarginBorrowRepayService init margin account repay service
+func (c *Client) NewMarginBorrowRepayService() *MarginBorrowRepayService {
+	return &MarginBorrowRepayService{c: c}
+}
+
 // NewCreateMarginOrderService init creating margin order service
 func (c *Client) NewCreateMarginOrderService() *CreateMarginOrderService {
 	return &CreateMarginOrderService{c: c}
