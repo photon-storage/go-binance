@@ -2,6 +2,7 @@ package binance
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 )
@@ -819,6 +820,44 @@ func (s *ListMarginTradesService) Do(ctx context.Context, opts ...RequestOption)
 		return []*TradeV3{}, err
 	}
 	return res, nil
+}
+
+// SetCrossMarginLeverageService sets cross margin max leverage.
+type SetCrossMarginLeverageService struct {
+	c        *Client
+	leverage int
+}
+
+// Asset set asset
+func (s *SetCrossMarginLeverageService) Leverage(leverage int) *SetCrossMarginLeverageService {
+	s.leverage = leverage
+	return s
+}
+
+// Do send request
+func (s *SetCrossMarginLeverageService) Do(ctx context.Context, opts ...RequestOption) error {
+	r := &request{
+		method:   http.MethodPost,
+		endpoint: "/sapi/v1/margin/max-leverage",
+		secType:  secTypeSigned,
+	}
+	r.setParam("maxLeverage", s.leverage)
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return err
+	}
+	res := new(SetCrossMarginLeverageResp)
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+	if !res.Success {
+		return fmt.Errorf("set cross margin max leverage failure")
+	}
+	return nil
+}
+
+type SetCrossMarginLeverageResp struct {
+	Success bool `json:"success"`
 }
 
 // GetMaxBorrowableService get max borrowable of asset
