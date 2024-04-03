@@ -828,7 +828,7 @@ type SetCrossMarginLeverageService struct {
 	leverage int
 }
 
-// Asset set asset
+// Leverage sets leverage.
 func (s *SetCrossMarginLeverageService) Leverage(leverage int) *SetCrossMarginLeverageService {
 	s.leverage = leverage
 	return s
