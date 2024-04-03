@@ -768,6 +768,11 @@ func (c *Client) NewListMarginTradesService() *ListMarginTradesService {
 	return &ListMarginTradesService{c: c}
 }
 
+// NewSetCrossMarginLeverageService init set cross margin max leverage service
+func (c *Client) NewSetCrossMarginLeverageService() *SetCrossMarginLeverageService {
+	return &SetCrossMarginLeverageService{c: c}
+}
+
 // NewGetMaxBorrowableService init get max borrowable service
 func (c *Client) NewGetMaxBorrowableService() *GetMaxBorrowableService {
 	return &GetMaxBorrowableService{c: c}
