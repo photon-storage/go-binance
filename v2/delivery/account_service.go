@@ -42,6 +42,46 @@ type Balance struct {
 	UpdateTime         int64  `json:"updateTime"`
 }
 
+// GetCommissionRateService get commission rate for a symbol
+type GetCommissionRateService struct {
+	c      *Client
+	symbol *string
+}
+
+// Symbol set symbol.
+func (s *GetCommissionRateService) Symbol(symbol string) *GetCommissionRateService {
+	s.symbol = &symbol
+	return s
+}
+
+// Do send request
+func (s *GetCommissionRateService) Do(ctx context.Context, opts ...RequestOption) (*CommissionRate, error) {
+	r := &request{
+		method:   http.MethodGet,
+		endpoint: "/dapi/v1/commissionRate",
+		secType:  secTypeSigned,
+	}
+	if s.symbol != nil {
+		r.setParam("symbol", *s.symbol)
+	}
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	var res CommissionRate
+	if err = json.Unmarshal(data, &res); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+type CommissionRate struct {
+	Symbol string `json:"symbol"`
+	Maker  string `json:"makerCommissionRate"`
+	Taker  string `json:"takerCommissionRate"`
+}
+
 // GetAccountService get account info
 type GetAccountService struct {
 	c *Client

@@ -429,6 +429,11 @@ func (c *Client) NewGetBalanceService() *GetBalanceService {
 	return &GetBalanceService{c: c}
 }
 
+// NewGetCommissionRateService init get commission rate service
+func (c *Client) NewGetCommissionRateService() *GetCommissionRateService {
+	return &GetCommissionRateService{c: c}
+}
+
 // NewGetPositionRiskService init getting position risk service
 func (c *Client) NewGetPositionRiskService() *GetPositionRiskService {
 	return &GetPositionRiskService{c: c}
