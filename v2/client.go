@@ -1042,3 +1042,7 @@ func (c *Client) NewSubAccountFuturesSummaryV1Service() *SubAccountFuturesSummar
 func (c *Client) NewSubAccountFuturesTransferV1Service() *SubAccountFuturesTransferV1Service {
 	return &SubAccountFuturesTransferV1Service{c: c}
 }
+
+func (c *Client) NewGetEarnAccountSerice() *GetEarnAccountService {
+	return &GetEarnAccountService{c: c}
+}
