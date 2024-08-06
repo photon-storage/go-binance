@@ -15,7 +15,20 @@ type CreateOrderService struct {
 func (s *CreateOrderService) Do(
 	ctx context.Context,
 	opts ...delivery.RequestOption,
-) (res *delivery.CreateOrderResponse, err error) {
+) (*delivery.CreateOrderResponse, error) {
 	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/order"))
 	return s.CreateOrderService.Do(ctx, opts...)
+}
+
+// GetOrderService get an order
+type GetOrderService struct {
+	*delivery.GetOrderService
+}
+
+func (s *GetOrderService) Do(
+	ctx context.Context,
+	opts ...delivery.RequestOption,
+) (*delivery.Order, error) {
+	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/order"))
+	return s.GetOrderService.Do(ctx, opts...)
 }
