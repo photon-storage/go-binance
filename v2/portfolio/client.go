@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/photon-storage/go-binance/v2/common"
+	"github.com/photon-storage/go-binance/v2/delivery"
 )
 
 const (
@@ -165,6 +166,17 @@ func (c *Client) callAPI(ctx context.Context, r *request, opts ...RequestOption)
 		return nil, apiErr
 	}
 	return data, nil
+}
+
+func (c *Client) newDeliveryClient() *delivery.Client {
+	dc := delivery.NewClient(c.APIKey, c.SecretKey)
+	dc.BaseURL = c.BaseURL
+	return dc
+}
+
+func (c *Client) NewCreateOrderService() *CreateOrderService {
+	dc := c.newDeliveryClient()
+	return &CreateOrderService{CreateOrderService: dc.NewCreateOrderService()}
 }
 
 func (c *Client) NewGetBalanceService() *GetBalanceService {
