@@ -171,6 +171,7 @@ func (c *Client) callAPI(ctx context.Context, r *request, opts ...RequestOption)
 func (c *Client) newDeliveryClient() *delivery.Client {
 	dc := delivery.NewClient(c.APIKey, c.SecretKey)
 	dc.BaseURL = c.BaseURL
+	dc.Debug = c.Debug
 	return dc
 }
 
@@ -179,6 +180,32 @@ func (c *Client) NewCreateOrderService() *CreateOrderService {
 	return &CreateOrderService{CreateOrderService: dc.NewCreateOrderService()}
 }
 
+func (c *Client) NewChangeLeverageService() *ChangeLeverageService {
+	dc := c.newDeliveryClient()
+	return &ChangeLeverageService{
+		ChangeLeverageService: dc.NewChangeLeverageService(),
+	}
+}
+
+func (c *Client) NewChangePositionModeService() *ChangePositionModeService {
+	dc := c.newDeliveryClient()
+	return &ChangePositionModeService{
+		ChangePositionModeService: dc.NewChangePositionModeService(),
+	}
+}
+
+func (c *Client) NewGetOrderService() *GetOrderService {
+	dc := c.newDeliveryClient()
+	return &GetOrderService{GetOrderService: dc.NewGetOrderService()}
+}
+
 func (c *Client) NewGetBalanceService() *GetBalanceService {
 	return &GetBalanceService{c: c}
+}
+
+func (c *Client) NewGetPositionRiskService() *GetPositionRiskService {
+	dc := c.newDeliveryClient()
+	return &GetPositionRiskService{
+		GetPositionRiskService: dc.NewGetPositionRiskService(),
+	}
 }
