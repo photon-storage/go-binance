@@ -63,4 +63,3 @@ jobs:
             ```
             Date: ${{ github.event.head_commit.timestamp }}
             Pusher: ${{ github.event.pusher.name }}
-
