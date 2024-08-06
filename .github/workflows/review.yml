@@ -1,15 +1,18 @@
 name: Code Review
 
 on:
-  issue_comment:
-    types: [created, edited]
+  push:
+    branches: [ 'master' ]
+  pull_request:
+    branches: [ 'master' ]
+
+defaults:
+  run:
+    # shell default shell to bash for all OS
+    shell: bash
 
 jobs:
   code-review:
-    if: |
-      github.event_name == 'pull_request' ||
-        (github.event.comment.user.login == 'adshao' &&
-          startsWith(github.event.comment.body, 'chatgpt'))
     runs-on: ubuntu-latest
     steps:
     - name: pr-open-notification
