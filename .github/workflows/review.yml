@@ -12,11 +12,41 @@ jobs:
           startsWith(github.event.comment.body, 'chatgpt'))
     runs-on: ubuntu-latest
     steps:
-    - name: OpenAI ChatGPT Code Review
-      uses: adshao/chatgpt-code-review-action@v0.2.5
+    - name: pr-open-notification
+      if: ${{ github.event_name == 'pull_request' && github.event.action == 'opened' }}
+      uses: appleboy/telegram-action@master
       with:
-        PROGRAMMING_LANGUAGE: 'Go'
-        REVIEW_COMMENT_PREFIX: 'chatgpt:'
-        FULL_REVIEW_COMMENT: 'chatgpt'
-        OPENAI_TOKEN: ${{ secrets.OPENAI_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        to: ${{ secrets.TG_DEV_GROUP_ID }}
+        token: ${{ secrets.TG_BOT_TOKEN }}
+        format: markdown
+        disable_web_page_preview: true
+        message: |
+          *PR Opened*
+          Repo: [go-binance](https://github.com/photon-storage/go-binance)
+          Commit: [${{ github.event.pull_request.head.sha }}](${{ github.event.pull_request.html_url }})
+          Author: [${{ github.event.pull_request.user.login }}](${{ github.event.pull_request.user.html_url }})
+          Message:```text
+          ${{ github.event.pull_request.title }}
+          ```
+          Date: ${{ github.event.pull_request.updated_at }}
+          Changes: ${{ github.event.pull_request.changed_files }} files (+${{ github.event.pull_request.additions }}/-${{ github.event.pull_request.deletions }})
+
+    - name: pr-push-notification
+      if: ${{ github.event_name == 'push' }}
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TG_DEV_GROUP_ID }}
+        token: ${{ secrets.TG_BOT_TOKEN }}
+        format: markdown
+        disable_web_page_preview: true
+        message: |
+          *PR Merged*
+          Repo: [go-binance](https://github.com/photon-storage/go-binance)
+          Commit: [${{ github.event.after }}](${{ github.event.head_commit.url }})
+          Author: ${{ github.event.head_commit.author.username }}
+          Message: ```text
+          ${{ github.event.head_commit.message }}
+          ```
+          Date: ${{ github.event.head_commit.timestamp }}
+          Pusher: ${{ github.event.pusher.name }}
+
