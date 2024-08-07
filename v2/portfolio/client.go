@@ -194,6 +194,13 @@ func (c *Client) NewChangePositionModeService() *ChangePositionModeService {
 	}
 }
 
+func (c *Client) NewGetCommissionRateService() *GetCommissionRateService {
+	dc := c.newDeliveryClient()
+	return &GetCommissionRateService{
+		GetCommissionRateService: dc.NewGetCommissionRateService(),
+	}
+}
+
 func (c *Client) NewGetOrderService() *GetOrderService {
 	dc := c.newDeliveryClient()
 	return &GetOrderService{GetOrderService: dc.NewGetOrderService()}

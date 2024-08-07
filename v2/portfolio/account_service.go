@@ -4,7 +4,26 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+
+	"github.com/photon-storage/go-binance/v2/delivery"
 )
+
+type GetCommissionRateService struct {
+	*delivery.GetCommissionRateService
+}
+
+func (s *GetCommissionRateService) Symbol(symbol string) *GetCommissionRateService {
+	s.GetCommissionRateService.Symbol(symbol)
+	return s
+}
+
+func (s *GetCommissionRateService) Do(
+	ctx context.Context,
+	opts ...delivery.RequestOption,
+) (*delivery.CommissionRate, error) {
+	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/commissionRate"))
+	return s.GetCommissionRateService.Do(ctx, opts...)
+}
 
 // GetBalanceService get account balance
 type GetBalanceService struct {
