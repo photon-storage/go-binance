@@ -177,33 +177,31 @@ func (c *Client) newDeliveryClient() *delivery.Client {
 
 func (c *Client) NewCreateOrderService() *CreateOrderService {
 	dc := c.newDeliveryClient()
-	return &CreateOrderService{CreateOrderService: dc.NewCreateOrderService()}
+	return &CreateOrderService{ds: dc.NewCreateOrderService()}
 }
 
 func (c *Client) NewChangeLeverageService() *ChangeLeverageService {
 	dc := c.newDeliveryClient()
-	return &ChangeLeverageService{
-		ChangeLeverageService: dc.NewChangeLeverageService(),
-	}
+	return &ChangeLeverageService{ds: dc.NewChangeLeverageService()}
 }
 
 func (c *Client) NewChangePositionModeService() *ChangePositionModeService {
 	dc := c.newDeliveryClient()
-	return &ChangePositionModeService{
-		ChangePositionModeService: dc.NewChangePositionModeService(),
-	}
+	return &ChangePositionModeService{ds: dc.NewChangePositionModeService()}
 }
 
 func (c *Client) NewGetCommissionRateService() *GetCommissionRateService {
 	dc := c.newDeliveryClient()
-	return &GetCommissionRateService{
-		GetCommissionRateService: dc.NewGetCommissionRateService(),
-	}
+	return &GetCommissionRateService{ds: dc.NewGetCommissionRateService()}
 }
 
 func (c *Client) NewGetOrderService() *GetOrderService {
 	dc := c.newDeliveryClient()
-	return &GetOrderService{GetOrderService: dc.NewGetOrderService()}
+	return &GetOrderService{ds: dc.NewGetOrderService()}
+}
+
+func (c *Client) NewGetAccountService() *GetAccountService {
+	return &GetAccountService{c: c}
 }
 
 func (c *Client) NewGetBalanceService() *GetBalanceService {
@@ -212,7 +210,5 @@ func (c *Client) NewGetBalanceService() *GetBalanceService {
 
 func (c *Client) NewGetPositionRiskService() *GetPositionRiskService {
 	dc := c.newDeliveryClient()
-	return &GetPositionRiskService{
-		GetPositionRiskService: dc.NewGetPositionRiskService(),
-	}
+	return &GetPositionRiskService{ds: dc.NewGetPositionRiskService()}
 }

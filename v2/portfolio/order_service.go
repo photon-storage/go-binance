@@ -8,7 +8,7 @@ import (
 
 // CreateOrderService create order
 type CreateOrderService struct {
-	*delivery.CreateOrderService
+	ds *delivery.CreateOrderService
 }
 
 // Do send request
@@ -17,12 +17,12 @@ func (s *CreateOrderService) Do(
 	opts ...delivery.RequestOption,
 ) (*delivery.CreateOrderResponse, error) {
 	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/order"))
-	return s.CreateOrderService.Do(ctx, opts...)
+	return s.ds.Do(ctx, opts...)
 }
 
 // GetOrderService get an order
 type GetOrderService struct {
-	*delivery.GetOrderService
+	ds *delivery.GetOrderService
 }
 
 func (s *GetOrderService) Do(
@@ -30,5 +30,5 @@ func (s *GetOrderService) Do(
 	opts ...delivery.RequestOption,
 ) (*delivery.Order, error) {
 	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/order"))
-	return s.GetOrderService.Do(ctx, opts...)
+	return s.ds.Do(ctx, opts...)
 }

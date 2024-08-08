@@ -9,11 +9,11 @@ import (
 )
 
 type GetCommissionRateService struct {
-	*delivery.GetCommissionRateService
+	ds *delivery.GetCommissionRateService
 }
 
 func (s *GetCommissionRateService) Symbol(symbol string) *GetCommissionRateService {
-	s.GetCommissionRateService.Symbol(symbol)
+	s.ds.Symbol(symbol)
 	return s
 }
 
@@ -22,7 +22,42 @@ func (s *GetCommissionRateService) Do(
 	opts ...delivery.RequestOption,
 ) (*delivery.CommissionRate, error) {
 	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/commissionRate"))
-	return s.GetCommissionRateService.Do(ctx, opts...)
+	return s.ds.Do(ctx, opts...)
+}
+
+type GetAccountService struct {
+	c *Client
+}
+
+func (s *GetAccountService) Do(ctx context.Context, opts ...RequestOption) (*Account, error) {
+	r := &request{
+		method:   http.MethodGet,
+		endpoint: "/papi/v1/account",
+		secType:  secTypeSigned,
+	}
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	res := new(Account)
+	if err = json.Unmarshal(data, res); err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+type Account struct {
+	UniMMR                   string `json:"uniMMR"`
+	AccountEquity            string `json:"accountEquity"`
+	ActualEquity             string `json:"actualEquity"`
+	AccountInitialMargin     string `json:"accountInitialMargin"`
+	AccountMaintMargin       string `json:"accountMaintMargin"`
+	AccountStatus            string `json:"accountStatus"`
+	VirtualMaxWithdrawAmount string `json:"virtualMaxWithdrawAmount"`
+	TotalAvailableBalance    string `json:"totalAvailableBalance"`
+	totalMarginOpenLoss      string `json:"totalMarginOpenLoss"`
+	UpdateTime               int64  `json:"updateTime"`
 }
 
 // GetBalanceService get account balance
@@ -31,7 +66,7 @@ type GetBalanceService struct {
 }
 
 // Do send request
-func (s *GetBalanceService) Do(ctx context.Context, opts ...RequestOption) (res []*Balance, err error) {
+func (s *GetBalanceService) Do(ctx context.Context, opts ...RequestOption) ([]*Balance, error) {
 	r := &request{
 		method:   http.MethodGet,
 		endpoint: "/papi/v1/balance",
@@ -41,12 +76,9 @@ func (s *GetBalanceService) Do(ctx context.Context, opts ...RequestOption) (res 
 	if err != nil {
 		return []*Balance{}, err
 	}
-	res = make([]*Balance, 0)
-	err = json.Unmarshal(data, &res)
-	if err != nil {
-		return []*Balance{}, err
-	}
-	return res, nil
+
+	res := make([]*Balance, 0)
+	return res, json.Unmarshal(data, &res)
 }
 
 // Balance define user balance of your account
