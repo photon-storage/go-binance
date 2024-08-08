@@ -175,19 +175,19 @@ func (c *Client) newDeliveryClient() *delivery.Client {
 	return dc
 }
 
-func (c *Client) NewCreateOrderService() *CreateOrderService {
+func (c *Client) NewCreateOrderServiceCM() *CreateOrderServiceCM {
 	dc := c.newDeliveryClient()
-	return &CreateOrderService{ds: dc.NewCreateOrderService()}
+	return &CreateOrderServiceCM{Ds: dc.NewCreateOrderService()}
 }
 
-func (c *Client) NewChangeLeverageService() *ChangeLeverageService {
+func (c *Client) NewChangeLeverageServiceCM() *ChangeLeverageServiceCM {
 	dc := c.newDeliveryClient()
-	return &ChangeLeverageService{ds: dc.NewChangeLeverageService()}
+	return &ChangeLeverageServiceCM{ds: dc.NewChangeLeverageService()}
 }
 
-func (c *Client) NewChangePositionModeService() *ChangePositionModeService {
+func (c *Client) NewChangePositionModeServiceCM() *ChangePositionModeServiceCM {
 	dc := c.newDeliveryClient()
-	return &ChangePositionModeService{ds: dc.NewChangePositionModeService()}
+	return &ChangePositionModeServiceCM{ds: dc.NewChangePositionModeService()}
 }
 
 func (c *Client) NewGetCommissionRateService() *GetCommissionRateService {
@@ -195,9 +195,9 @@ func (c *Client) NewGetCommissionRateService() *GetCommissionRateService {
 	return &GetCommissionRateService{ds: dc.NewGetCommissionRateService()}
 }
 
-func (c *Client) NewGetOrderService() *GetOrderService {
+func (c *Client) NewGetOrderServiceCM() *GetOrderServiceCM {
 	dc := c.newDeliveryClient()
-	return &GetOrderService{ds: dc.NewGetOrderService()}
+	return &GetOrderServiceCM{Ds: dc.NewGetOrderService()}
 }
 
 func (c *Client) NewGetAccountService() *GetAccountService {

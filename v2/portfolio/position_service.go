@@ -6,11 +6,21 @@ import (
 	"github.com/photon-storage/go-binance/v2/delivery"
 )
 
-type ChangeLeverageService struct {
+type ChangeLeverageServiceCM struct {
 	ds *delivery.ChangeLeverageService
 }
 
-func (s *ChangeLeverageService) Do(
+func (s *ChangeLeverageServiceCM) Symbol(symbol string) *ChangeLeverageServiceCM {
+	s.ds.Symbol(symbol)
+	return s
+}
+
+func (s *ChangeLeverageServiceCM) Leverage(leverage int) *ChangeLeverageServiceCM {
+	s.ds.Leverage(leverage)
+	return s
+}
+
+func (s *ChangeLeverageServiceCM) Do(
 	ctx context.Context,
 	opts ...delivery.RequestOption,
 ) (*delivery.SymbolLeverage, error) {
@@ -18,11 +28,11 @@ func (s *ChangeLeverageService) Do(
 	return s.ds.Do(ctx, opts...)
 }
 
-type ChangePositionModeService struct {
+type ChangePositionModeServiceCM struct {
 	ds *delivery.ChangePositionModeService
 }
 
-func (s *ChangePositionModeService) Do(
+func (s *ChangePositionModeServiceCM) Do(
 	ctx context.Context,
 	opts ...delivery.RequestOption,
 ) error {
