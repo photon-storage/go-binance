@@ -7,7 +7,7 @@ import (
 )
 
 type ChangeLeverageService struct {
-	*delivery.ChangeLeverageService
+	ds *delivery.ChangeLeverageService
 }
 
 func (s *ChangeLeverageService) Do(
@@ -15,11 +15,11 @@ func (s *ChangeLeverageService) Do(
 	opts ...delivery.RequestOption,
 ) (*delivery.SymbolLeverage, error) {
 	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/leverage"))
-	return s.ChangeLeverageService.Do(ctx, opts...)
+	return s.ds.Do(ctx, opts...)
 }
 
 type ChangePositionModeService struct {
-	*delivery.ChangePositionModeService
+	ds *delivery.ChangePositionModeService
 }
 
 func (s *ChangePositionModeService) Do(
@@ -27,5 +27,5 @@ func (s *ChangePositionModeService) Do(
 	opts ...delivery.RequestOption,
 ) error {
 	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/positionSide/dual"))
-	return s.ChangePositionModeService.Do(ctx, opts...)
+	return s.ds.Do(ctx, opts...)
 }

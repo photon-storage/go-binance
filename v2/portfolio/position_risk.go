@@ -7,7 +7,7 @@ import (
 )
 
 type GetPositionRiskService struct {
-	*delivery.GetPositionRiskService
+	ds *delivery.GetPositionRiskService
 }
 
 func (s *GetPositionRiskService) Do(
@@ -15,5 +15,5 @@ func (s *GetPositionRiskService) Do(
 	opts ...delivery.RequestOption,
 ) ([]*delivery.PositionRisk, error) {
 	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/positionRisk"))
-	return s.GetPositionRiskService.Do(ctx, opts...)
+	return s.ds.Do(ctx, opts...)
 }
