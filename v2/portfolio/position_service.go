@@ -32,6 +32,11 @@ type ChangePositionModeServiceCM struct {
 	ds *delivery.ChangePositionModeService
 }
 
+func (s *ChangePositionModeServiceCM) DualSide(dualSide bool) *ChangePositionModeServiceCM {
+	s.ds.DualSide(dualSide)
+	return s
+}
+
 func (s *ChangePositionModeServiceCM) Do(
 	ctx context.Context,
 	opts ...delivery.RequestOption,
