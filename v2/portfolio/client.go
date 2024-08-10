@@ -212,3 +212,7 @@ func (c *Client) NewGetPositionRiskService() *GetPositionRiskService {
 	dc := c.newDeliveryClient()
 	return &GetPositionRiskService{ds: dc.NewGetPositionRiskService()}
 }
+
+func (c *Client) NewFutureRepayService() *FutureRepayService {
+	return &FutureRepayService{c: c}
+}
