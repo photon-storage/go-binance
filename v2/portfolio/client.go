@@ -16,6 +16,7 @@ import (
 
 	"github.com/photon-storage/go-binance/v2/common"
 	"github.com/photon-storage/go-binance/v2/delivery"
+	"github.com/photon-storage/go-binance/v2/futures"
 )
 
 const (
@@ -175,9 +176,21 @@ func (c *Client) newDeliveryClient() *delivery.Client {
 	return dc
 }
 
+func (c *Client) newFutureClient() *futures.Client {
+	fc := futures.NewClient(c.APIKey, c.SecretKey)
+	fc.BaseURL = c.BaseURL
+	fc.Debug = c.Debug
+	return fc
+}
+
 func (c *Client) NewCreateOrderServiceCM() *CreateOrderServiceCM {
 	dc := c.newDeliveryClient()
 	return &CreateOrderServiceCM{Ds: dc.NewCreateOrderService()}
+}
+
+func (c *Client) NewCreateOrderServiceUM() *CreateOrderServiceUM {
+	fc := c.newFutureClient()
+	return &CreateOrderServiceUM{Fs: fc.NewCreateOrderService()}
 }
 
 func (c *Client) NewChangeLeverageServiceCM() *ChangeLeverageServiceCM {
@@ -198,6 +211,11 @@ func (c *Client) NewGetCommissionRateService() *GetCommissionRateService {
 func (c *Client) NewGetOrderServiceCM() *GetOrderServiceCM {
 	dc := c.newDeliveryClient()
 	return &GetOrderServiceCM{Ds: dc.NewGetOrderService()}
+}
+
+func (c *Client) NewGetOrderServiceUM() *GetOrderServiceUM {
+	fc := c.newFutureClient()
+	return &GetOrderServiceUM{Fs: fc.NewGetOrderService()}
 }
 
 func (c *Client) NewGetAccountService() *GetAccountService {
