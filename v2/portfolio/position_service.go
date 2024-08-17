@@ -84,3 +84,27 @@ func (s *ChangePositionModeServiceUM) Do(
 	opts = append(opts, futures.WithEndpoint("/papi/v1/um/positionSide/dual"))
 	return s.fs.Do(ctx, opts...)
 }
+
+type GetPositionModeServiceCM struct {
+	ds *delivery.GetPositionModeService
+}
+
+func (s *GetPositionModeServiceCM) Do(
+	ctx context.Context,
+	opts ...delivery.RequestOption,
+) (*delivery.PositionMode, error) {
+	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/positionSide/dual"))
+	return s.ds.Do(ctx, opts...)
+}
+
+type GetPositionModeServiceUM struct {
+	fs *futures.GetPositionModeService
+}
+
+func (s *GetPositionModeServiceUM) Do(
+	ctx context.Context,
+	opts ...futures.RequestOption,
+) (*futures.PositionMode, error) {
+	opts = append(opts, futures.WithEndpoint("/papi/v1/um/positionSide/dual"))
+	return s.fs.Do(ctx, opts...)
+}
