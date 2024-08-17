@@ -198,9 +198,19 @@ func (c *Client) NewChangeLeverageServiceCM() *ChangeLeverageServiceCM {
 	return &ChangeLeverageServiceCM{ds: dc.NewChangeLeverageService()}
 }
 
+func (c *Client) NewChangeLeverageServiceUM() *ChangeLeverageServiceUM {
+	fc := c.newFutureClient()
+	return &ChangeLeverageServiceUM{fs: fc.NewChangeLeverageService()}
+}
+
 func (c *Client) NewChangePositionModeServiceCM() *ChangePositionModeServiceCM {
 	dc := c.newDeliveryClient()
 	return &ChangePositionModeServiceCM{ds: dc.NewChangePositionModeService()}
+}
+
+func (c *Client) NewChangePositionModeServiceUM() *ChangePositionModeServiceUM {
+	fc := c.newFutureClient()
+	return &ChangePositionModeServiceUM{fs: fc.NewChangePositionModeService()}
 }
 
 func (c *Client) NewGetCommissionRateService() *GetCommissionRateService {
