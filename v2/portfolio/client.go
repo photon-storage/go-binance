@@ -228,6 +228,16 @@ func (c *Client) NewGetOrderServiceUM() *GetOrderServiceUM {
 	return &GetOrderServiceUM{Fs: fc.NewGetOrderService()}
 }
 
+func (c *Client) NewGetPositionModeServiceCM() *GetPositionModeServiceCM {
+	dc := c.newDeliveryClient()
+	return &GetPositionModeServiceCM{ds: dc.NewGetPositionModeService()}
+}
+
+func (c *Client) NewGetPositionModeServiceUM() *GetPositionModeServiceUM {
+	fc := c.newFutureClient()
+	return &GetPositionModeServiceUM{fs: fc.NewGetPositionModeService()}
+}
+
 func (c *Client) NewGetAccountService() *GetAccountService {
 	return &GetAccountService{c: c}
 }
