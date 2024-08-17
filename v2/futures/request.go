@@ -111,3 +111,9 @@ func WithExtraForm(m map[string]any) RequestOption {
 		r.setFormParams(m)
 	}
 }
+
+func WithEndpoint(endpoint string) RequestOption {
+	return func(r *request) {
+		r.endpoint = endpoint
+	}
+}
