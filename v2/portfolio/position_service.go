@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/photon-storage/go-binance/v2/delivery"
+	"github.com/photon-storage/go-binance/v2/futures"
 )
 
 type ChangeLeverageServiceCM struct {
@@ -28,6 +29,28 @@ func (s *ChangeLeverageServiceCM) Do(
 	return s.ds.Do(ctx, opts...)
 }
 
+type ChangeLeverageServiceUM struct {
+	fs *futures.ChangeLeverageService
+}
+
+func (s *ChangeLeverageServiceUM) Symbol(symbol string) *ChangeLeverageServiceUM {
+	s.fs.Symbol(symbol)
+	return s
+}
+
+func (s *ChangeLeverageServiceUM) Leverage(leverage int) *ChangeLeverageServiceUM {
+	s.fs.Leverage(leverage)
+	return s
+}
+
+func (s *ChangeLeverageServiceUM) Do(
+	ctx context.Context,
+	opts ...futures.RequestOption,
+) (*futures.SymbolLeverage, error) {
+	opts = append(opts, futures.WithEndpoint("/papi/v1/um/leverage"))
+	return s.fs.Do(ctx, opts...)
+}
+
 type ChangePositionModeServiceCM struct {
 	ds *delivery.ChangePositionModeService
 }
@@ -43,4 +66,21 @@ func (s *ChangePositionModeServiceCM) Do(
 ) error {
 	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/positionSide/dual"))
 	return s.ds.Do(ctx, opts...)
+}
+
+type ChangePositionModeServiceUM struct {
+	fs *futures.ChangePositionModeService
+}
+
+func (s *ChangePositionModeServiceUM) DualSide(dualSide bool) *ChangePositionModeServiceUM {
+	s.fs.DualSide(dualSide)
+	return s
+}
+
+func (s *ChangePositionModeServiceUM) Do(
+	ctx context.Context,
+	opts ...futures.RequestOption,
+) error {
+	opts = append(opts, futures.WithEndpoint("/papi/v1/um/positionSide/dual"))
+	return s.fs.Do(ctx, opts...)
 }
