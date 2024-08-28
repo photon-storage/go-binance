@@ -56,7 +56,7 @@ type Account struct {
 	AccountStatus            string `json:"accountStatus"`
 	VirtualMaxWithdrawAmount string `json:"virtualMaxWithdrawAmount"`
 	TotalAvailableBalance    string `json:"totalAvailableBalance"`
-	totalMarginOpenLoss      string `json:"totalMarginOpenLoss"`
+	TotalMarginOpenLoss      string `json:"totalMarginOpenLoss"`
 	UpdateTime               int64  `json:"updateTime"`
 }
 
