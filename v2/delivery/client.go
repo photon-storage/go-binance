@@ -478,3 +478,23 @@ func (c *Client) NewFundingRateService() *FundingRateService {
 func (c *Client) NewDepthService() *DepthService {
 	return &DepthService{c: c}
 }
+
+// NewGetOpenInterestService init open interest service
+func (c *Client) NewGetOpenInterestService() *GetOpenInterestService {
+	return &GetOpenInterestService{c: c}
+}
+
+// NewTopTraderLongShortPositionRatioService init top trader long/short positon service
+func (c *Client) NewTopTraderLongShortPositionRatioService() *TopTraderLongShortPositionRatioService {
+	return &TopTraderLongShortPositionRatioService{c: c}
+}
+
+// NewTopTraderLongShortAccountRatioService init top trader long/short positon service
+func (c *Client) NewTopTraderLongShortAccountRatioService() *TopTraderLongShortAccountRatioService {
+	return &TopTraderLongShortAccountRatioService{c: c}
+}
+
+// NewLongShortRatioService init open interest statistics service
+func (c *Client) NewLongShortRatioService() *LongShortRatioService {
+	return &LongShortRatioService{c: c}
+}

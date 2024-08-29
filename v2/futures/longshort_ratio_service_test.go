@@ -16,18 +16,18 @@ func TestLongShortRatioService(t *testing.T) {
 
 func (s *longShortRatioServiceTestSuite) TestOpenInterestStatistics() {
 	data := []byte(`[
-		{ 
+		{
 			"symbol":"BTCUSDT",
 			"longShortRatio":"1.8105",
-			"longAccount": "0.6442", 
-			"shortAccount":"0.3558", 
+			"longAccount": "0.6442",
+			"shortAccount":"0.3558",
 			"timestamp":1583139600000
 		},
 		{
 			"symbol":"BTCUSDT",
 			"longShortRatio":"0.5576",
-			"longAccount": "0.3580", 
-			"shortAccount":"0.6420",                  
+			"longAccount": "0.3580",
+			"shortAccount":"0.6420",
 			"timestamp":1583139900000
 		}
 	]`)

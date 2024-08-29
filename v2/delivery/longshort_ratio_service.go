@@ -1,4 +1,4 @@
-package futures
+package delivery
 
 import (
 	"context"
@@ -9,16 +9,16 @@ import (
 // LongShortRatioService list open history data of a symbol.
 type LongShortRatioService struct {
 	c         *Client
-	symbol    string
+	pair      string
 	period    string
 	limit     *int
 	startTime *int64
 	endTime   *int64
 }
 
-// Symbol set symbol
-func (s *LongShortRatioService) Symbol(symbol string) *LongShortRatioService {
-	s.symbol = symbol
+// Pair set pair
+func (s *LongShortRatioService) Pair(pair string) *LongShortRatioService {
+	s.pair = pair
 	return s
 }
 
@@ -53,7 +53,7 @@ func (s *LongShortRatioService) Do(ctx context.Context, opts ...RequestOption) (
 		endpoint: "/futures/data/globalLongShortAccountRatio",
 	}
 
-	r.setParam("symbol", s.symbol)
+	r.setParam("pair", s.pair)
 	r.setParam("period", s.period)
 
 	if s.limit != nil {
@@ -66,7 +66,7 @@ func (s *LongShortRatioService) Do(ctx context.Context, opts ...RequestOption) (
 		r.setParam("endTime", *s.endTime)
 	}
 
-	data, _, err := s.c.callAPI(ctx, r, opts...)
+	data, err := s.c.callAPI(ctx, r, opts...)
 	if err != nil {
 		return []*LongShortRatio{}, err
 	}
@@ -81,7 +81,7 @@ func (s *LongShortRatioService) Do(ctx context.Context, opts ...RequestOption) (
 }
 
 type LongShortRatio struct {
-	Symbol         string `json:"symbol"`
+	Pair           string `json:"pair"`
 	LongShortRatio string `json:"longShortRatio"`
 	LongAccount    string `json:"longAccount"`
 	ShortAccount   string `json:"shortAccount"`
@@ -91,16 +91,16 @@ type LongShortRatio struct {
 // TopTraderLongShortPositionRatioService list open history data of a symbol.
 type TopTraderLongShortPositionRatioService struct {
 	c         *Client
-	symbol    string
+	pair      string
 	period    string
 	limit     *int
 	startTime *int64
 	endTime   *int64
 }
 
-// Symbol set symbol
-func (s *TopTraderLongShortPositionRatioService) Symbol(symbol string) *TopTraderLongShortPositionRatioService {
-	s.symbol = symbol
+// Pair set pair
+func (s *TopTraderLongShortPositionRatioService) Pair(pair string) *TopTraderLongShortPositionRatioService {
+	s.pair = pair
 	return s
 }
 
@@ -135,7 +135,7 @@ func (s *TopTraderLongShortPositionRatioService) Do(ctx context.Context, opts ..
 		endpoint: "/futures/data/topLongShortPositionRatio",
 	}
 
-	r.setParam("symbol", s.symbol)
+	r.setParam("pair", s.pair)
 	r.setParam("period", s.period)
 
 	if s.limit != nil {
@@ -148,7 +148,7 @@ func (s *TopTraderLongShortPositionRatioService) Do(ctx context.Context, opts ..
 		r.setParam("endTime", *s.endTime)
 	}
 
-	data, _, err := s.c.callAPI(ctx, r, opts...)
+	data, err := s.c.callAPI(ctx, r, opts...)
 	if err != nil {
 		return []*LongShortRatio{}, err
 	}
@@ -165,16 +165,16 @@ func (s *TopTraderLongShortPositionRatioService) Do(ctx context.Context, opts ..
 // TopTraderLongShortAccountRatioService list open history data of a symbol.
 type TopTraderLongShortAccountRatioService struct {
 	c         *Client
-	symbol    string
+	pair      string
 	period    string
 	limit     *int
 	startTime *int64
 	endTime   *int64
 }
 
-// Symbol set symbol
-func (s *TopTraderLongShortAccountRatioService) Symbol(symbol string) *TopTraderLongShortAccountRatioService {
-	s.symbol = symbol
+// Pair set pair
+func (s *TopTraderLongShortAccountRatioService) Pair(pair string) *TopTraderLongShortAccountRatioService {
+	s.pair = pair
 	return s
 }
 
@@ -209,7 +209,7 @@ func (s *TopTraderLongShortAccountRatioService) Do(ctx context.Context, opts ...
 		endpoint: "/futures/data/topLongShortAccountRatio",
 	}
 
-	r.setParam("symbol", s.symbol)
+	r.setParam("pair", s.pair)
 	r.setParam("period", s.period)
 
 	if s.limit != nil {
@@ -222,7 +222,7 @@ func (s *TopTraderLongShortAccountRatioService) Do(ctx context.Context, opts ...
 		r.setParam("endTime", *s.endTime)
 	}
 
-	data, _, err := s.c.callAPI(ctx, r, opts...)
+	data, err := s.c.callAPI(ctx, r, opts...)
 	if err != nil {
 		return []*LongShortRatio{}, err
 	}
