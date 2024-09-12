@@ -14,10 +14,16 @@ import (
 	"os"
 	"time"
 
+	"github.com/bitly/go-simplejson"
+
 	"github.com/photon-storage/go-binance/v2/common"
 	"github.com/photon-storage/go-binance/v2/delivery"
 	"github.com/photon-storage/go-binance/v2/futures"
 )
+
+type UserDataEventType string
+
+type FutureSubtype string
 
 const (
 	apiUrl = "https://papi.binance.com"
@@ -27,8 +33,23 @@ const (
 	recvWindowKey = "recvWindow"
 )
 
+const (
+	UserDataEventTypeOrderTradeUpdate UserDataEventType = "ORDER_TRADE_UPDATE"
+
+	FutureSubtypeUM FutureSubtype = "UM"
+	FutureSubtypeCM FutureSubtype = "CM"
+)
+
 func currentTimestamp() int64 {
 	return int64(time.Nanosecond) * time.Now().UnixNano() / int64(time.Millisecond)
+}
+
+func newJSON(data []byte) (j *simplejson.Json, err error) {
+	j, err = simplejson.NewJson(data)
+	if err != nil {
+		return nil, err
+	}
+	return j, nil
 }
 
 // NewClient initialize an API client instance with API key and secret key.
@@ -211,6 +232,14 @@ func (c *Client) NewChangePositionModeServiceCM() *ChangePositionModeServiceCM {
 func (c *Client) NewChangePositionModeServiceUM() *ChangePositionModeServiceUM {
 	fc := c.newFutureClient()
 	return &ChangePositionModeServiceUM{fs: fc.NewChangePositionModeService()}
+}
+
+func (c *Client) NewStartUserStreamService() *StartUserStreamService {
+	return &StartUserStreamService{c: c}
+}
+
+func (c *Client) NewKeepaliveUserStreamService() *KeepaliveUserStreamService {
+	return &KeepaliveUserStreamService{c: c}
 }
 
 func (c *Client) NewGetCommissionRateService() *GetCommissionRateService {
