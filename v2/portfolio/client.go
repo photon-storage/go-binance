@@ -275,9 +275,14 @@ func (c *Client) NewGetBalanceService() *GetBalanceService {
 	return &GetBalanceService{c: c}
 }
 
-func (c *Client) NewGetPositionRiskService() *GetPositionRiskService {
+func (c *Client) NewGetPositionRiskServiceCM() *GetPositionRiskServiceCM {
 	dc := c.newDeliveryClient()
-	return &GetPositionRiskService{ds: dc.NewGetPositionRiskService()}
+	return &GetPositionRiskServiceCM{ds: dc.NewGetPositionRiskService()}
+}
+
+func (c *Client) NewGetPositionRiskServiceUM() *GetPositionRiskServiceUM {
+	fc := c.newFutureClient()
+	return &GetPositionRiskServiceUM{fs: fc.NewGetPositionRiskService()}
 }
 
 func (c *Client) NewFutureRepayService() *FutureRepayService {
