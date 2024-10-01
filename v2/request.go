@@ -122,3 +122,9 @@ func WithHeaders(header http.Header) RequestOption {
 		r.header = header.Clone()
 	}
 }
+
+func WithEndpoint(endpoint string) RequestOption {
+	return func(r *request) {
+		r.endpoint = endpoint
+	}
+}

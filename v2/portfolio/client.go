@@ -16,6 +16,7 @@ import (
 
 	"github.com/bitly/go-simplejson"
 
+	"github.com/photon-storage/go-binance/v2"
 	"github.com/photon-storage/go-binance/v2/common"
 	"github.com/photon-storage/go-binance/v2/delivery"
 	"github.com/photon-storage/go-binance/v2/futures"
@@ -34,7 +35,8 @@ const (
 )
 
 const (
-	UserDataEventTypeOrderTradeUpdate UserDataEventType = "ORDER_TRADE_UPDATE"
+	UserDataEventTypeFutureOrderTradeUpdate UserDataEventType = "ORDER_TRADE_UPDATE"
+	UserDataEventTypeMarginOrderTradeUpdate UserDataEventType = "executionReport"
 
 	FutureSubtypeUM FutureSubtype = "UM"
 	FutureSubtypeCM FutureSubtype = "CM"
@@ -190,6 +192,13 @@ func (c *Client) callAPI(ctx context.Context, r *request, opts ...RequestOption)
 	return data, nil
 }
 
+func (c *Client) newMarginClient() *binance.Client {
+	mc := binance.NewClient(c.APIKey, c.SecretKey)
+	mc.BaseURL = c.BaseURL
+	mc.Debug = c.Debug
+	return mc
+}
+
 func (c *Client) newDeliveryClient() *delivery.Client {
 	dc := delivery.NewClient(c.APIKey, c.SecretKey)
 	dc.BaseURL = c.BaseURL
@@ -204,6 +213,11 @@ func (c *Client) newFutureClient() *futures.Client {
 	return fc
 }
 
+func (c *Client) NewCreateOrderServiceMargin() *CreateOrderServiceMargin {
+	mc := c.newMarginClient()
+	return &CreateOrderServiceMargin{Ms: mc.NewCreateMarginOrderService()}
+}
+
 func (c *Client) NewCreateOrderServiceCM() *CreateOrderServiceCM {
 	dc := c.newDeliveryClient()
 	return &CreateOrderServiceCM{Ds: dc.NewCreateOrderService()}
@@ -212,6 +226,21 @@ func (c *Client) NewCreateOrderServiceCM() *CreateOrderServiceCM {
 func (c *Client) NewCreateOrderServiceUM() *CreateOrderServiceUM {
 	fc := c.newFutureClient()
 	return &CreateOrderServiceUM{Fs: fc.NewCreateOrderService()}
+}
+
+func (c *Client) NewGetOrderServiceMargin() *GetOrderServiceMargin {
+	mc := c.newMarginClient()
+	return &GetOrderServiceMargin{Ms: mc.NewGetMarginOrderService()}
+}
+
+func (c *Client) NewGetOrderServiceCM() *GetOrderServiceCM {
+	dc := c.newDeliveryClient()
+	return &GetOrderServiceCM{Ds: dc.NewGetOrderService()}
+}
+
+func (c *Client) NewGetOrderServiceUM() *GetOrderServiceUM {
+	fc := c.newFutureClient()
+	return &GetOrderServiceUM{Fs: fc.NewGetOrderService()}
 }
 
 func (c *Client) NewChangeLeverageServiceCM() *ChangeLeverageServiceCM {
@@ -234,29 +263,6 @@ func (c *Client) NewChangePositionModeServiceUM() *ChangePositionModeServiceUM {
 	return &ChangePositionModeServiceUM{fs: fc.NewChangePositionModeService()}
 }
 
-func (c *Client) NewStartUserStreamService() *StartUserStreamService {
-	return &StartUserStreamService{c: c}
-}
-
-func (c *Client) NewKeepaliveUserStreamService() *KeepaliveUserStreamService {
-	return &KeepaliveUserStreamService{c: c}
-}
-
-func (c *Client) NewGetCommissionRateService() *GetCommissionRateService {
-	dc := c.newDeliveryClient()
-	return &GetCommissionRateService{ds: dc.NewGetCommissionRateService()}
-}
-
-func (c *Client) NewGetOrderServiceCM() *GetOrderServiceCM {
-	dc := c.newDeliveryClient()
-	return &GetOrderServiceCM{Ds: dc.NewGetOrderService()}
-}
-
-func (c *Client) NewGetOrderServiceUM() *GetOrderServiceUM {
-	fc := c.newFutureClient()
-	return &GetOrderServiceUM{Fs: fc.NewGetOrderService()}
-}
-
 func (c *Client) NewGetPositionModeServiceCM() *GetPositionModeServiceCM {
 	dc := c.newDeliveryClient()
 	return &GetPositionModeServiceCM{ds: dc.NewGetPositionModeService()}
@@ -265,14 +271,6 @@ func (c *Client) NewGetPositionModeServiceCM() *GetPositionModeServiceCM {
 func (c *Client) NewGetPositionModeServiceUM() *GetPositionModeServiceUM {
 	fc := c.newFutureClient()
 	return &GetPositionModeServiceUM{fs: fc.NewGetPositionModeService()}
-}
-
-func (c *Client) NewGetAccountService() *GetAccountService {
-	return &GetAccountService{c: c}
-}
-
-func (c *Client) NewGetBalanceService() *GetBalanceService {
-	return &GetBalanceService{c: c}
 }
 
 func (c *Client) NewGetPositionRiskServiceCM() *GetPositionRiskServiceCM {
@@ -287,4 +285,25 @@ func (c *Client) NewGetPositionRiskServiceUM() *GetPositionRiskServiceUM {
 
 func (c *Client) NewFutureRepayService() *FutureRepayService {
 	return &FutureRepayService{c: c}
+}
+
+func (c *Client) NewStartUserStreamService() *StartUserStreamService {
+	return &StartUserStreamService{c: c}
+}
+
+func (c *Client) NewKeepaliveUserStreamService() *KeepaliveUserStreamService {
+	return &KeepaliveUserStreamService{c: c}
+}
+
+func (c *Client) NewGetCommissionRateService() *GetCommissionRateService {
+	dc := c.newDeliveryClient()
+	return &GetCommissionRateService{ds: dc.NewGetCommissionRateService()}
+}
+
+func (c *Client) NewGetAccountService() *GetAccountService {
+	return &GetAccountService{c: c}
+}
+
+func (c *Client) NewGetBalanceService() *GetBalanceService {
+	return &GetBalanceService{c: c}
 }

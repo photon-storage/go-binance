@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/photon-storage/go-binance/v2"
 	"github.com/photon-storage/go-binance/v2/delivery"
 	"github.com/photon-storage/go-binance/v2/futures"
 )
@@ -31,8 +32,9 @@ type WsUserDataEvent struct {
 }
 
 type WsOrderTradeUpdate struct {
-	CM *delivery.WsOrderTradeUpdate
-	UM *futures.WsOrderTradeUpdate
+	Margin *binance.WsOrderUpdate
+	CM     *delivery.WsOrderTradeUpdate
+	UM     *futures.WsOrderTradeUpdate
 }
 
 // WsUserDataHandler handle WsUserDataEvent
@@ -49,24 +51,36 @@ func WsUserDataServe(listenKey string, handler WsUserDataHandler, errHandler Err
 			return
 		}
 
-		if event.FutureSubtype == FutureSubtypeCM {
-			cmEvent := new(delivery.WsUserDataEvent)
-			if err := json.Unmarshal(message, cmEvent); err != nil {
+		switch event.Event {
+		case UserDataEventTypeMarginOrderTradeUpdate:
+			ou := new(binance.WsOrderUpdate)
+			if err := json.Unmarshal(message, ou); err != nil {
 				errHandler(err)
 				return
 			}
 
-			event.OrderTradeUpdate.CM = &cmEvent.OrderTradeUpdate
-		}
+			event.OrderTradeUpdate.Margin = ou
 
-		if event.FutureSubtype == FutureSubtypeUM {
-			umEvent := new(futures.WsUserDataEvent)
-			if err := json.Unmarshal(message, umEvent); err != nil {
-				errHandler(err)
-				return
+		case UserDataEventTypeFutureOrderTradeUpdate:
+			switch event.FutureSubtype {
+			case FutureSubtypeCM:
+				cmEvent := new(delivery.WsUserDataEvent)
+				if err := json.Unmarshal(message, cmEvent); err != nil {
+					errHandler(err)
+					return
+				}
+
+				event.OrderTradeUpdate.CM = &cmEvent.OrderTradeUpdate
+
+			case FutureSubtypeUM:
+				umEvent := new(futures.WsUserDataEvent)
+				if err := json.Unmarshal(message, umEvent); err != nil {
+					errHandler(err)
+					return
+				}
+
+				event.OrderTradeUpdate.UM = &umEvent.OrderTradeUpdate
 			}
-
-			event.OrderTradeUpdate.UM = &umEvent.OrderTradeUpdate
 		}
 
 		handler(event)
