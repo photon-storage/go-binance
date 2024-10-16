@@ -243,6 +243,16 @@ func (c *Client) NewGetOrderServiceUM() *GetOrderServiceUM {
 	return &GetOrderServiceUM{Fs: fc.NewGetOrderService()}
 }
 
+func (c *Client) NewListOpenOrdersServiceCM() *ListOpenOrdersServiceCM {
+	dc := c.newDeliveryClient()
+	return &ListOpenOrdersServiceCM{Ds: dc.NewListOpenOrdersService()}
+}
+
+func (c *Client) NewListOpenOrdersServiceUM() *ListOpenOrdersServiceUM {
+	fc := c.newFutureClient()
+	return &ListOpenOrdersServiceUM{Fs: fc.NewListOpenOrdersService()}
+}
+
 func (c *Client) NewChangeLeverageServiceCM() *ChangeLeverageServiceCM {
 	dc := c.newDeliveryClient()
 	return &ChangeLeverageServiceCM{ds: dc.NewChangeLeverageService()}

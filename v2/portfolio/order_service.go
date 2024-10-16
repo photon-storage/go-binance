@@ -79,3 +79,27 @@ func (s *GetOrderServiceUM) Do(
 	opts = append(opts, futures.WithEndpoint("/papi/v1/um/order"))
 	return s.Fs.Do(ctx, opts...)
 }
+
+type ListOpenOrdersServiceCM struct {
+	Ds *delivery.ListOpenOrdersService
+}
+
+func (s *ListOpenOrdersServiceCM) Do(
+	ctx context.Context,
+	opts ...delivery.RequestOption,
+) ([]*delivery.Order, error) {
+	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/openOrders"))
+	return s.Ds.Do(ctx, opts...)
+}
+
+type ListOpenOrdersServiceUM struct {
+	Fs *futures.ListOpenOrdersService
+}
+
+func (s *ListOpenOrdersServiceUM) Do(
+	ctx context.Context,
+	opts ...futures.RequestOption,
+) ([]*futures.Order, error) {
+	opts = append(opts, futures.WithEndpoint("/papi/v1/um/openOrders"))
+	return s.Fs.Do(ctx, opts...)
+}
