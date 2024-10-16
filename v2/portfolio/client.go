@@ -213,6 +213,7 @@ func (c *Client) newFutureClient() *futures.Client {
 	return fc
 }
 
+// Create order
 func (c *Client) NewCreateOrderServiceMargin() *CreateOrderServiceMargin {
 	mc := c.newMarginClient()
 	return &CreateOrderServiceMargin{Ms: mc.NewCreateMarginOrderService()}
@@ -228,6 +229,7 @@ func (c *Client) NewCreateOrderServiceUM() *CreateOrderServiceUM {
 	return &CreateOrderServiceUM{Fs: fc.NewCreateOrderService()}
 }
 
+// Get order
 func (c *Client) NewGetOrderServiceMargin() *GetOrderServiceMargin {
 	mc := c.newMarginClient()
 	return &GetOrderServiceMargin{Ms: mc.NewGetMarginOrderService()}
@@ -243,6 +245,55 @@ func (c *Client) NewGetOrderServiceUM() *GetOrderServiceUM {
 	return &GetOrderServiceUM{Fs: fc.NewGetOrderService()}
 }
 
+// Cancel order
+func (c *Client) NewCancelOrderServiceMargin() *CancelOrderServiceMargin {
+	mc := c.newMarginClient()
+	return &CancelOrderServiceMargin{Ms: mc.NewCancelMarginOrderService()}
+}
+
+func (c *Client) NewCancelOrderServiceCM() *CancelOrderServiceCM {
+	dc := c.newDeliveryClient()
+	return &CancelOrderServiceCM{Ds: dc.NewCancelOrderService()}
+}
+
+func (c *Client) NewCancelOrderServiceUM() *CancelOrderServiceUM {
+	fc := c.newFutureClient()
+	return &CancelOrderServiceUM{Fs: fc.NewCancelOrderService()}
+}
+
+// Cancel open orders
+func (c *Client) NewCancelOpenOrdersServiceMargin() *CancelOpenOrdersServiceMargin {
+	mc := c.newMarginClient()
+	return &CancelOpenOrdersServiceMargin{Ms: mc.NewCancelMarginOpenOrdersService()}
+}
+
+func (c *Client) NewCancelOpenOrdersServiceCM() *CancelOpenOrdersServiceCM {
+	dc := c.newDeliveryClient()
+	return &CancelOpenOrdersServiceCM{Ds: dc.NewCancelAllOpenOrdersService()}
+}
+
+func (c *Client) NewCancelOpenOrdersServiceUM() *CancelOpenOrdersServiceUM {
+	fc := c.newFutureClient()
+	return &CancelOpenOrdersServiceUM{Fs: fc.NewCancelAllOpenOrdersService()}
+}
+
+// List open orders
+func (c *Client) NewListOpenOrdersServiceMargin() *ListOpenOrdersServiceMargin {
+	mc := c.newMarginClient()
+	return &ListOpenOrdersServiceMargin{Ms: mc.NewListMarginOpenOrdersService()}
+}
+
+func (c *Client) NewListOpenOrdersServiceCM() *ListOpenOrdersServiceCM {
+	dc := c.newDeliveryClient()
+	return &ListOpenOrdersServiceCM{Ds: dc.NewListOpenOrdersService()}
+}
+
+func (c *Client) NewListOpenOrdersServiceUM() *ListOpenOrdersServiceUM {
+	fc := c.newFutureClient()
+	return &ListOpenOrdersServiceUM{Fs: fc.NewListOpenOrdersService()}
+}
+
+// Change leverage
 func (c *Client) NewChangeLeverageServiceCM() *ChangeLeverageServiceCM {
 	dc := c.newDeliveryClient()
 	return &ChangeLeverageServiceCM{ds: dc.NewChangeLeverageService()}
@@ -258,6 +309,7 @@ func (c *Client) NewChangePositionModeServiceCM() *ChangePositionModeServiceCM {
 	return &ChangePositionModeServiceCM{ds: dc.NewChangePositionModeService()}
 }
 
+// Change position mode
 func (c *Client) NewChangePositionModeServiceUM() *ChangePositionModeServiceUM {
 	fc := c.newFutureClient()
 	return &ChangePositionModeServiceUM{fs: fc.NewChangePositionModeService()}
@@ -273,6 +325,7 @@ func (c *Client) NewGetPositionModeServiceUM() *GetPositionModeServiceUM {
 	return &GetPositionModeServiceUM{fs: fc.NewGetPositionModeService()}
 }
 
+// Get position risk
 func (c *Client) NewGetPositionRiskServiceCM() *GetPositionRiskServiceCM {
 	dc := c.newDeliveryClient()
 	return &GetPositionRiskServiceCM{ds: dc.NewGetPositionRiskService()}
@@ -283,27 +336,33 @@ func (c *Client) NewGetPositionRiskServiceUM() *GetPositionRiskServiceUM {
 	return &GetPositionRiskServiceUM{fs: fc.NewGetPositionRiskService()}
 }
 
+// Repay
 func (c *Client) NewFutureRepayService() *FutureRepayService {
 	return &FutureRepayService{c: c}
 }
 
+// User stream
 func (c *Client) NewStartUserStreamService() *StartUserStreamService {
 	return &StartUserStreamService{c: c}
 }
 
+// Keepalive
 func (c *Client) NewKeepaliveUserStreamService() *KeepaliveUserStreamService {
 	return &KeepaliveUserStreamService{c: c}
 }
 
+// Get commission rate
 func (c *Client) NewGetCommissionRateService() *GetCommissionRateService {
 	dc := c.newDeliveryClient()
 	return &GetCommissionRateService{ds: dc.NewGetCommissionRateService()}
 }
 
+// Get account
 func (c *Client) NewGetAccountService() *GetAccountService {
 	return &GetAccountService{c: c}
 }
 
+// Get balance
 func (c *Client) NewGetBalanceService() *GetBalanceService {
 	return &GetBalanceService{c: c}
 }
