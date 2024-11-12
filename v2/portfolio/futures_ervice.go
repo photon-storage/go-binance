@@ -18,3 +18,17 @@ func (s *FutureRepayService) Do(ctx context.Context, opts ...RequestOption) erro
 	_, err := s.c.callAPI(ctx, r, opts...)
 	return err
 }
+
+type AutoCollectionService struct {
+	c *Client
+}
+
+func (s *AutoCollectionService) Do(ctx context.Context, opts ...RequestOption) error {
+	r := &request{
+		method:   http.MethodPost,
+		endpoint: "/papi/v1/auto-collection",
+		secType:  secTypeSigned,
+	}
+	_, err := s.c.callAPI(ctx, r, opts...)
+	return err
+}

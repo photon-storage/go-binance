@@ -341,6 +341,10 @@ func (c *Client) NewFutureRepayService() *FutureRepayService {
 	return &FutureRepayService{c: c}
 }
 
+func (c *Client) NewAutoCollectionService() *AutoCollectionService {
+	return &AutoCollectionService{c: c}
+}
+
 // User stream
 func (c *Client) NewStartUserStreamService() *StartUserStreamService {
 	return &StartUserStreamService{c: c}
