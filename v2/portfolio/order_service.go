@@ -155,6 +155,43 @@ func (s *CancelOpenOrdersServiceUM) Do(
 	return s.Fs.Do(ctx, opts...)
 }
 
+// List orders
+type ListOrdersServiceMargin struct {
+	Ms *binance.ListMarginOrdersService
+}
+
+func (s *ListOrdersServiceMargin) Do(
+	ctx context.Context,
+	opts ...binance.RequestOption,
+) ([]*binance.Order, error) {
+	opts = append(opts, binance.WithEndpoint("/papi/v1/margin/allOrders"))
+	return s.Ms.Do(ctx, opts...)
+}
+
+type ListOrdersServiceCM struct {
+	Ds *delivery.ListOrdersService
+}
+
+func (s *ListOrdersServiceCM) Do(
+	ctx context.Context,
+	opts ...delivery.RequestOption,
+) ([]*delivery.Order, error) {
+	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/allOrders"))
+	return s.Ds.Do(ctx, opts...)
+}
+
+type ListOrdersServiceUM struct {
+	Fs *futures.ListOrdersService
+}
+
+func (s *ListOrdersServiceUM) Do(
+	ctx context.Context,
+	opts ...futures.RequestOption,
+) ([]*futures.Order, error) {
+	opts = append(opts, futures.WithEndpoint("/papi/v1/um/allOrders"))
+	return s.Fs.Do(ctx, opts...)
+}
+
 // List open orders
 type ListOpenOrdersServiceMargin struct {
 	Ms *binance.ListMarginOpenOrdersService
