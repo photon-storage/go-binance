@@ -277,6 +277,22 @@ func (c *Client) NewCancelOpenOrdersServiceUM() *CancelOpenOrdersServiceUM {
 	return &CancelOpenOrdersServiceUM{Fs: fc.NewCancelAllOpenOrdersService()}
 }
 
+// List orders
+func (c *Client) NewListOrdersServiceMargin() *ListOrdersServiceMargin {
+	mc := c.newMarginClient()
+	return &ListOrdersServiceMargin{Ms: mc.NewListMarginOrdersService()}
+}
+
+func (c *Client) NewListOrdersServiceCM() *ListOrdersServiceCM {
+	dc := c.newDeliveryClient()
+	return &ListOrdersServiceCM{Ds: dc.NewListOrdersService()}
+}
+
+func (c *Client) NewListOrdersServiceUM() *ListOrdersServiceUM {
+	fc := c.newFutureClient()
+	return &ListOrdersServiceUM{Fs: fc.NewListOrdersService()}
+}
+
 // List open orders
 func (c *Client) NewListOpenOrdersServiceMargin() *ListOpenOrdersServiceMargin {
 	mc := c.newMarginClient()
