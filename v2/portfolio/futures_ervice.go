@@ -32,3 +32,33 @@ func (s *AutoCollectionService) Do(ctx context.Context, opts ...RequestOption) e
 	_, err := s.c.callAPI(ctx, r, opts...)
 	return err
 }
+
+type BnbTransferService struct {
+	c      *Client
+	amount float64
+	toUM   bool
+}
+
+func (s *BnbTransferService) Amount(v float64) *BnbTransferService {
+	s.amount = v
+	return s
+}
+
+func (s *BnbTransferService) ToUM(v bool) *BnbTransferService {
+	s.toUM = v
+	return s
+}
+
+func (s *BnbTransferService) Do(ctx context.Context, opts ...RequestOption) error {
+	r := &request{
+		method:   http.MethodPost,
+		endpoint: "/papi/v1/bnb-transfer",
+		secType:  secTypeSigned,
+	}
+	r.setFormParams(params{
+		"amount":       s.amount,
+		"transferSide": map[bool]string{true: "TO_UM", false: "FROM_UM"}[s.toUM],
+	})
+	_, err := s.c.callAPI(ctx, r, opts...)
+	return err
+}

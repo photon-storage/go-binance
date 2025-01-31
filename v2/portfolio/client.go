@@ -361,6 +361,10 @@ func (c *Client) NewAutoCollectionService() *AutoCollectionService {
 	return &AutoCollectionService{c: c}
 }
 
+func (c *Client) NewBnbTransferService() *BnbTransferService {
+	return &BnbTransferService{c: c}
+}
+
 // User stream
 func (c *Client) NewStartUserStreamService() *StartUserStreamService {
 	return &StartUserStreamService{c: c}
