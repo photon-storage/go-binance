@@ -74,7 +74,7 @@ func (s *GetBalanceService) Do(ctx context.Context, opts ...RequestOption) ([]*B
 	}
 	data, err := s.c.callAPI(ctx, r, opts...)
 	if err != nil {
-		return []*Balance{}, err
+		return nil, err
 	}
 
 	res := make([]*Balance, 0)
@@ -96,4 +96,72 @@ type Balance struct {
 	CmUnrealizedPNL     string `json:"cmUnrealizedPNL"`
 	NegativeBalance     string `json:"negativeBalance"`
 	UpdateTime          int64  `json:"updateTime"`
+}
+
+type GetLeverageBracketServiceCM struct {
+	c      *Client
+	symbol *string
+}
+
+func (s *GetLeverageBracketServiceCM) Do(ctx context.Context, opts ...RequestOption) ([]*LeverageBrackets, error) {
+	r := &request{
+		method:   http.MethodGet,
+		endpoint: "/papi/v1/cm/leverageBracket",
+		secType:  secTypeSigned,
+	}
+	if s.symbol != nil {
+		r.setParam("symbol", *s.symbol)
+	}
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	res := make([]*LeverageBrackets, 0)
+	return res, json.Unmarshal(data, &res)
+}
+
+func (s *GetLeverageBracketServiceCM) Symbol(symbol string) *GetLeverageBracketServiceCM {
+	s.symbol = &symbol
+	return s
+}
+
+type GetLeverageBracketServiceUM struct {
+	c      *Client
+	symbol *string
+}
+
+func (s *GetLeverageBracketServiceUM) Do(ctx context.Context, opts ...RequestOption) ([]*LeverageBrackets, error) {
+	r := &request{
+		method:   http.MethodGet,
+		endpoint: "/papi/v1/um/leverageBracket",
+		secType:  secTypeSigned,
+	}
+	if s.symbol != nil {
+		r.setParam("symbol", *s.symbol)
+	}
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	res := make([]*LeverageBrackets, 0)
+	return res, json.Unmarshal(data, &res)
+}
+
+func (s *GetLeverageBracketServiceUM) Symbol(symbol string) *GetLeverageBracketServiceUM {
+	s.symbol = &symbol
+	return s
+}
+
+type LeverageBrackets struct {
+	Symbol   string `json:"symbol"`
+	Brackets []struct {
+		Bracket                int     `json:"bracket"`
+		NotionalFloor          float64 `json:"notionalFloor"`
+		NotionalCap            float64 `json:"notionalCap"`
+		QtyFloor               float64 `json:"qtyFloor"`
+		QtyCap                 float64 `json:"qtyCap"`
+		MaintenanceMarginRatio float64 `json:"maintMarginRatio"`
+	} `json:"brackets"`
 }
