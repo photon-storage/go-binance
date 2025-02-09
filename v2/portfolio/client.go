@@ -390,3 +390,15 @@ func (c *Client) NewGetAccountService() *GetAccountService {
 func (c *Client) NewGetBalanceService() *GetBalanceService {
 	return &GetBalanceService{c: c}
 }
+
+func (c *Client) NewGetLeverageBracketServiceCM() *GetLeverageBracketServiceCM {
+	return &GetLeverageBracketServiceCM{
+		c: c,
+	}
+}
+
+func (c *Client) NewGetLeverageBracketServiceUM() *GetLeverageBracketServiceUM {
+	return &GetLeverageBracketServiceUM{
+		c: c,
+	}
+}

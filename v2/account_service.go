@@ -220,3 +220,29 @@ type APIKeyPermission struct {
 	EnableSpotAndMarginTrading     bool   `json:"enableSpotAndMarginTrading"`
 	TradingAuthorityExpirationTime uint64 `json:"tradingAuthorityExpirationTime"`
 }
+
+// GetCollateralRateService get collateral rates for coins
+type GetCollateralRateService struct {
+	c *Client
+}
+
+// Do send request
+func (s *GetCollateralRateService) Do(ctx context.Context, opts ...RequestOption) ([]*CollateralRate, error) {
+	r := &request{
+		method:   http.MethodGet,
+		endpoint: "/sapi/v1/portfolio/collateralRate",
+		secType:  secTypeSigned,
+	}
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	res := make([]*CollateralRate, 0)
+	return res, json.Unmarshal(data, &res)
+}
+
+type CollateralRate struct {
+	Asset string `json:"asset"`
+	Rate  string `json:"collateralRate"`
+}
