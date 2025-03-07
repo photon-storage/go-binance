@@ -664,6 +664,16 @@ func (c *Client) NewMarginTransferService() *MarginTransferService {
 	return &MarginTransferService{c: c}
 }
 
+// Weight = 100
+func (c *Client) NewMarginFutureInterestRateService() *MarginFutureInterestRateService {
+	return &MarginFutureInterestRateService{c: c}
+}
+
+// Weight = 1
+func (c *Client) NewMarginHistoryInterestRateService() *MarginHistoryInterestRateService {
+	return &MarginHistoryInterestRateService{c: c}
+}
+
 // NewMarginLoanService init margin account loan service
 func (c *Client) NewMarginLoanService() *MarginLoanService {
 	return &MarginLoanService{c: c}
