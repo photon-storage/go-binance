@@ -353,8 +353,7 @@ func (c *Client) parseRequest(r *request, opts ...RequestOption) (err error) {
 		r.setParam(recvWindowKey, r.recvWindow)
 	}
 	if r.secType == secTypeSigned {
-		ts := currentTimestamp() - c.TimeOffset
-		r.setParam(timestampKey, ts)
+		r.setParam(timestampKey, currentTimestamp()-c.TimeOffset)
 	}
 	queryString := r.query.Encode()
 	body := &bytes.Buffer{}
