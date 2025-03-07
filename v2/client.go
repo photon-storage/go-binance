@@ -353,7 +353,8 @@ func (c *Client) parseRequest(r *request, opts ...RequestOption) (err error) {
 		r.setParam(recvWindowKey, r.recvWindow)
 	}
 	if r.secType == secTypeSigned {
-		r.setParam(timestampKey, currentTimestamp()-c.TimeOffset)
+		ts := currentTimestamp() - c.TimeOffset
+		r.setParam(timestampKey, ts)
 	}
 	queryString := r.query.Encode()
 	body := &bytes.Buffer{}
@@ -662,6 +663,16 @@ func (c *Client) NewAveragePriceService() *AveragePriceService {
 // NewMarginTransferService init margin account transfer service
 func (c *Client) NewMarginTransferService() *MarginTransferService {
 	return &MarginTransferService{c: c}
+}
+
+// Weight = 100
+func (c *Client) NewMarginFutureInterestRateService() *MarginFutureInterestRateService {
+	return &MarginFutureInterestRateService{c: c}
+}
+
+// Weight = 1
+func (c *Client) NewMarginHistoryInterestRateService() *MarginHistoryInterestRateService {
+	return &MarginHistoryInterestRateService{c: c}
 }
 
 // NewMarginLoanService init margin account loan service

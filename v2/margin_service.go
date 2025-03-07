@@ -58,6 +58,112 @@ func (s *MarginTransferService) Do(ctx context.Context, opts ...RequestOption) (
 	return res, nil
 }
 
+type MarginFutureInterestRateService struct {
+	c          *Client
+	assets     string
+	isIsolated bool
+}
+
+func (s *MarginFutureInterestRateService) Assets(assets string) *MarginFutureInterestRateService {
+	s.assets = assets
+	return s
+}
+
+// IsIsolated is for isolated margin or not, "TRUE", "FALSE"，default "FALSE"
+func (s *MarginFutureInterestRateService) IsIsolated(isIsolated bool) *MarginFutureInterestRateService {
+	s.isIsolated = isIsolated
+	return s
+}
+
+type MarginFutureInterestRate struct {
+	Asset      string `json:"asset"`
+	HourlyRate string `json:"nextHourlyInterestRate"`
+}
+
+// Do send request
+func (s *MarginFutureInterestRateService) Do(ctx context.Context, opts ...RequestOption) ([]*MarginFutureInterestRate, error) {
+	r := &request{
+		method:   http.MethodGet,
+		endpoint: "/sapi/v1/margin/next-hourly-interest-rate",
+		secType:  secTypeSigned,
+	}
+	r.setParam("assets", s.assets)
+	if s.isIsolated {
+		r.setParam("isIsolated", "TRUE")
+	} else {
+		r.setParam("isIsolated", "FALSE")
+	}
+
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return nil, err
+	}
+	var res []*MarginFutureInterestRate
+	err = json.Unmarshal(data, &res)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+type MarginHistoryInterestRateService struct {
+	c         *Client
+	asset     string
+	startTime *int64
+	endTime   *int64
+}
+
+func (s *MarginHistoryInterestRateService) Asset(asset string) *MarginHistoryInterestRateService {
+	s.asset = asset
+	return s
+}
+
+// StartTime set start time
+func (s *MarginHistoryInterestRateService) StartTime(startTime int64) *MarginHistoryInterestRateService {
+	s.startTime = &startTime
+	return s
+}
+
+// EndTime set end time
+func (s *MarginHistoryInterestRateService) EndTime(endTime int64) *MarginHistoryInterestRateService {
+	s.endTime = &endTime
+	return s
+}
+
+type MarginHistoryInterestRate struct {
+	Asset     string `json:"asset"`
+	Rate      string `json:"dailyInterestRate"`
+	Timestamp int64  `json:"timestamp"`
+	VipLevel  int    `json:"vipLevel"`
+}
+
+// Do send request
+func (s *MarginHistoryInterestRateService) Do(ctx context.Context, opts ...RequestOption) ([]*MarginHistoryInterestRate, error) {
+	r := &request{
+		method:   http.MethodGet,
+		endpoint: "/sapi/v1/margin/interestRateHistory",
+		secType:  secTypeSigned,
+	}
+	r.setParam("asset", s.asset)
+	if s.startTime != nil {
+		r.setParam("startTime", *s.startTime)
+	}
+	if s.endTime != nil {
+		r.setParam("endTime", *s.endTime)
+	}
+
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return nil, err
+	}
+	var res []*MarginHistoryInterestRate
+	err = json.Unmarshal(data, &res)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 // TransactionResponse define transaction response
 type TransactionResponse struct {
 	TranID int64 `json:"tranId"`
