@@ -165,3 +165,132 @@ type LeverageBrackets struct {
 		MaintenanceMarginRatio float64 `json:"maintMarginRatio"`
 	} `json:"brackets"`
 }
+
+type GetMarginMaxBorrowableService struct {
+	c     *Client
+	asset string
+}
+
+func (s *GetMarginMaxBorrowableService) Asset(asset string) *GetMarginMaxBorrowableService {
+	s.asset = asset
+	return s
+}
+
+type GetMarginMaxBorrowableResponse struct {
+	Amount      float64 `json:"amount"`
+	BorrowLimit float64 `json:"borrowLimit"`
+}
+
+// Weight: 100
+func (s *GetMarginMaxBorrowableService) Do(
+	ctx context.Context,
+	opts ...RequestOption,
+) (*GetMarginMaxBorrowableResponse, error) {
+	r := &request{
+		method:   http.MethodGet,
+		endpoint: "/papi/v1/margin/maxBorrowable",
+		secType:  secTypeSigned,
+	}
+	r.setParam("asset", s.asset)
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	var res GetMarginMaxBorrowableResponse
+	if err := json.Unmarshal(data, &res); err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+type MarginBorrowService struct {
+	c      *Client
+	asset  string
+	amount float64
+}
+
+func (s *MarginBorrowService) Asset(asset string) *MarginBorrowService {
+	s.asset = asset
+	return s
+}
+
+func (s *MarginBorrowService) Amount(amount float64) *MarginBorrowService {
+	s.amount = amount
+	return s
+}
+
+type MarginBorrowResponse struct {
+	ID int64 `json:"tranId"`
+}
+
+// Weight: 100
+func (s *MarginBorrowService) Do(
+	ctx context.Context,
+	opts ...RequestOption,
+) (*MarginBorrowResponse, error) {
+	r := &request{
+		method:   http.MethodPost,
+		endpoint: "/papi/v1/marginLoan",
+		secType:  secTypeSigned,
+	}
+	r.setParam("asset", s.asset)
+	r.setParam("amount", s.amount)
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	var res MarginBorrowResponse
+	if err := json.Unmarshal(data, &res); err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+type MarginRepayService struct {
+	c      *Client
+	asset  string
+	amount float64
+}
+
+func (s *MarginRepayService) Asset(asset string) *MarginRepayService {
+	s.asset = asset
+	return s
+}
+
+func (s *MarginRepayService) Amount(amount float64) *MarginRepayService {
+	s.amount = amount
+	return s
+}
+
+type MarginRepayResponse struct {
+	ID int64 `json:"tranId"`
+}
+
+// Weight: 100
+func (s *MarginRepayService) Do(
+	ctx context.Context,
+	opts ...RequestOption,
+) (*MarginRepayResponse, error) {
+	r := &request{
+		method:   http.MethodPost,
+		endpoint: "/papi/v1/repayLoan",
+		secType:  secTypeSigned,
+	}
+	r.setParam("asset", s.asset)
+	r.setParam("amount", s.amount)
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	var res MarginRepayResponse
+	if err := json.Unmarshal(data, &res); err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+}

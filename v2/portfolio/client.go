@@ -402,3 +402,21 @@ func (c *Client) NewGetLeverageBracketServiceUM() *GetLeverageBracketServiceUM {
 		c: c,
 	}
 }
+
+func (c *Client) NewGetMarginMaxBorrowableService() *GetMarginMaxBorrowableService {
+	return &GetMarginMaxBorrowableService{
+		c: c,
+	}
+}
+
+func (c *Client) NewMarginBorrowService() *MarginBorrowService {
+	return &MarginBorrowService{
+		c: c,
+	}
+}
+
+func (c *Client) NewMarginRepayService() *MarginRepayService {
+	return &MarginRepayService{
+		c: c,
+	}
+}
