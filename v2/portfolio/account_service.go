@@ -177,8 +177,8 @@ func (s *GetMarginMaxBorrowableService) Asset(asset string) *GetMarginMaxBorrowa
 }
 
 type GetMarginMaxBorrowableResponse struct {
-	Amount      float64 `json:"amount"`
-	BorrowLimit float64 `json:"borrowLimit"`
+	Amount      string `json:"amount"`
+	BorrowLimit string `json:"borrowLimit"`
 }
 
 // Weight: 100
