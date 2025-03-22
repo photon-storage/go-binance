@@ -1060,3 +1060,11 @@ func (c *Client) NewGetEarnAccountSerice() *GetEarnAccountService {
 func (c *Client) NewGetCollateralRateService() *GetCollateralRateService {
 	return &GetCollateralRateService{c: c}
 }
+
+func (c *Client) NewGetDelistService() *GetDelistService {
+	return &GetDelistService{c: c}
+}
+
+func (c *Client) NewMarginGetDelistService() *MarginGetDelistService {
+	return &MarginGetDelistService{c: c}
+}
