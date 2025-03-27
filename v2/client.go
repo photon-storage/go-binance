@@ -1068,3 +1068,7 @@ func (c *Client) NewGetDelistService() *GetDelistService {
 func (c *Client) NewMarginGetDelistService() *MarginGetDelistService {
 	return &MarginGetDelistService{c: c}
 }
+
+func (c *Client) NewMarginGetAvailableInventoryService() *MarginGetAvailableInventoryService {
+	return &MarginGetAvailableInventoryService{c: c}
+}

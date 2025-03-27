@@ -1346,3 +1346,44 @@ func (s *IsolatedMarginTransferService) Do(ctx context.Context, opts ...RequestO
 	}
 	return res, nil
 }
+
+type MarginGetAvailableInventoryService struct {
+	c          *Client
+	isIsolated bool
+}
+
+// IsIsolated is for isolated margin or not, "TRUE", "FALSE"，default "FALSE"
+func (s *MarginGetAvailableInventoryService) IsIsolated(isIsolated bool) *MarginGetAvailableInventoryService {
+	s.isIsolated = isIsolated
+	return s
+}
+
+type AvailableInventory struct {
+	Assets     map[string]string `json:"assets"`
+	UpdateTime int64             `json:"updateTime"`
+}
+
+// Do send request
+func (s *MarginGetAvailableInventoryService) Do(ctx context.Context, opts ...RequestOption) (*AvailableInventory, error) {
+	r := &request{
+		method:   http.MethodGet,
+		endpoint: "/sapi/v1/margin/available-inventory",
+		secType:  secTypeSigned,
+	}
+	if s.isIsolated {
+		r.setParam("type", "ISOLATED")
+	} else {
+		r.setParam("type", "MARGIN")
+	}
+
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	var res AvailableInventory
+	if err := json.Unmarshal(data, &res); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
