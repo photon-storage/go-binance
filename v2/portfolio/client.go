@@ -420,3 +420,8 @@ func (c *Client) NewMarginRepayService() *MarginRepayService {
 		c: c,
 	}
 }
+
+func (c *Client) NewGetIncomeHistoryServiceUM() *GetIncomeHistoryServiceUM {
+	fc := c.newFutureClient()
+	return &GetIncomeHistoryServiceUM{Fs: fc.NewGetIncomeHistoryService()}
+}
