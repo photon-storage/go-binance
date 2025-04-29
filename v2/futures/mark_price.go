@@ -211,3 +211,49 @@ type Bracket struct {
 	MaintMarginRatio float64 `json:"maintMarginRatio"`
 	Cum              float64 `json:"cum"`
 }
+
+type GetIndexPriceConstituentsService struct {
+	c      *Client
+	symbol string
+}
+
+// Symbol set symbol
+func (s *GetIndexPriceConstituentsService) Symbol(symbol string) *GetIndexPriceConstituentsService {
+	s.symbol = symbol
+	return s
+}
+
+// Do send request
+func (s *GetIndexPriceConstituentsService) Do(ctx context.Context, opts ...RequestOption) (*IndexPriceConstituents, error) {
+	r := &request{
+		method:   http.MethodGet,
+		endpoint: "/fapi/v1/constituents",
+		secType:  secTypeSigned,
+	}
+	r.setParam("symbol", s.symbol)
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	var res IndexPriceConstituents
+	err = json.Unmarshal(data, &res)
+	if err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+type IndexPriceConstituents struct {
+	Symbol       string                 `json:"symbol"`
+	Time         int64                  `json:"time"`
+	Constituents []*IndexPriceComponent `json:"constituents"`
+}
+
+type IndexPriceComponent struct {
+	Exchange string `json:"exchange"`
+	Symbol   string `json:"symbol"`
+	Price    string `json:"price"`
+	Weight   string `json:"weight"`
+}
