@@ -158,6 +158,7 @@ type LeverageBrackets struct {
 	Symbol   string `json:"symbol"`
 	Brackets []struct {
 		Bracket                int     `json:"bracket"`
+		InitialLeverage        int     `json:"initialLeverage"`
 		NotionalFloor          float64 `json:"notionalFloor"`
 		NotionalCap            float64 `json:"notionalCap"`
 		QtyFloor               float64 `json:"qtyFloor"`
