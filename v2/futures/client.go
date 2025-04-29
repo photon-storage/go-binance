@@ -634,3 +634,7 @@ func (c *Client) NewTopTraderLongShortAccountRatioService() *TopTraderLongShortA
 func (c *Client) NewLongShortRatioService() *LongShortRatioService {
 	return &LongShortRatioService{c: c}
 }
+
+func (c *Client) NewGetIndexPriceConstituentsService() *GetIndexPriceConstituentsService {
+	return &GetIndexPriceConstituentsService{c: c}
+}
