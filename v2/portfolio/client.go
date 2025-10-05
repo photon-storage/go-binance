@@ -425,3 +425,15 @@ func (c *Client) NewGetIncomeHistoryServiceUM() *GetIncomeHistoryServiceUM {
 	fc := c.newFutureClient()
 	return &GetIncomeHistoryServiceUM{Fs: fc.NewGetIncomeHistoryService()}
 }
+
+func (c *Client) NewDustTransferService() *DustTransferService {
+	mc := binance.NewClient(c.APIKey, c.SecretKey)
+	mc.Debug = c.Debug
+	return &DustTransferService{Ms: mc.NewDustTransferService()}
+}
+
+func (c *Client) NewDustListService() *DustListService {
+	mc := binance.NewClient(c.APIKey, c.SecretKey)
+	mc.Debug = c.Debug
+	return &DustListService{Ms: mc.NewListDustService()}
+}
