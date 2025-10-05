@@ -89,13 +89,19 @@ type UserAssetDribbletDetail struct {
 // DustTransferService convert dust assets to BNB.
 // See https://binance-docs.github.io/apidocs/spot/en/#dust-transfer-user_data
 type DustTransferService struct {
-	c     *Client
-	asset []string
+	c           *Client
+	asset       []string
+	accountType string
 }
 
 // Asset set asset.
 func (s *DustTransferService) Asset(asset []string) *DustTransferService {
 	s.asset = asset
+	return s
+}
+
+func (s *DustTransferService) MarginAccount() *DustTransferService {
+	s.accountType = "MARGIN"
 	return s
 }
 
@@ -108,6 +114,9 @@ func (s *DustTransferService) Do(ctx context.Context) (withdraws *DustTransferRe
 	}
 	for _, a := range s.asset {
 		r.addParam("asset", a)
+	}
+	if s.accountType != "" {
+		r.setParam("accountType", s.accountType)
 	}
 	data, err := s.c.callAPI(ctx, r)
 	if err != nil {
@@ -141,7 +150,13 @@ type DustTransferResult struct {
 // ListDustService get list of dust to BNB.
 // See https://binance-docs.github.io/apidocs/spot/en/#get-assets-that-can-be-converted-into-bnb-user_data
 type ListDustService struct {
-	c *Client
+	c           *Client
+	accountType string
+}
+
+func (s *ListDustService) MarginAccount() *ListDustService {
+	s.accountType = "MARGIN"
+	return s
 }
 
 // Do sends the request.
@@ -151,10 +166,15 @@ func (s *ListDustService) Do(ctx context.Context) (res *ListDustResponse, err er
 		endpoint: "/sapi/v1/asset/dust-btc",
 		secType:  secTypeSigned,
 	}
+	if s.accountType != "" {
+		r.setParam("accountType", s.accountType)
+	}
+
 	data, err := s.c.callAPI(ctx, r)
 	if err != nil {
 		return
 	}
+
 	res = new(ListDustResponse)
 	err = json.Unmarshal(data, res)
 	if err != nil {
