@@ -55,7 +55,7 @@ func (s *ConvertDustLiabilityService) Asset(asset []string) *ConvertDustLiabilit
 func (s *ConvertDustLiabilityService) Do(
 	ctx context.Context,
 	opts ...binance.RequestOption,
-) (*binance.ConvertDustLiabilityResponse, error) {
+) error {
 	return s.Ms.Do(ctx)
 }
 
