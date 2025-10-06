@@ -11,6 +11,7 @@ package binance
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 )
 
@@ -198,4 +199,75 @@ type ListDustResponse struct {
 	TotalTransferBtc   string           `json:"totalTransferBtc"`
 	TotalTransferBNB   string           `json:"totalTransferBNB"`
 	DribbletPercentage string           `json:"dribbletPercentage"`
+}
+
+type ConvertDustLiabilityService struct {
+	c     *Client
+	asset []string
+}
+
+func (s *ConvertDustLiabilityService) Asset(asset []string) *ConvertDustLiabilityService {
+	s.asset = asset
+	return s
+}
+
+func (s *ConvertDustLiabilityService) Do(ctx context.Context) (*ConvertDustLiabilityResponse, error) {
+	r := &request{
+		method:   http.MethodPost,
+		endpoint: "/sapi/v1/margin/exchange-small-liability",
+		secType:  secTypeSigned,
+	}
+	for _, a := range s.asset {
+		r.addParam("asset", a)
+	}
+
+	data, err := s.c.callAPI(ctx, r)
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Print("%v\n", string(data))
+
+	var res ConvertDustLiabilityResponse
+	if err := json.Unmarshal(data, &res); err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+type ConvertDustLiabilityResponse struct {
+}
+
+type ListDustLiabilityService struct {
+	c *Client
+}
+
+// Do sends the request.
+func (s *ListDustLiabilityService) Do(ctx context.Context) ([]*ListDustLiability, error) {
+	r := &request{
+		method:   http.MethodGet,
+		endpoint: "/sapi/v1/margin/exchange-small-liability",
+		secType:  secTypeSigned,
+	}
+
+	data, err := s.c.callAPI(ctx, r)
+	if err != nil {
+		return nil, err
+	}
+
+	var res []*ListDustLiability
+	if err := json.Unmarshal(data, &res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+type ListDustLiability struct {
+	Asset          string  `json:"asset"`
+	Interest       string  `json:"interest"`
+	Principal      string  `json:"principal"`
+	LiabilityAsset string  `json:"liabilityAsset"`
+	LiabilityQty   float64 `json:"liabilityQty"`
 }
