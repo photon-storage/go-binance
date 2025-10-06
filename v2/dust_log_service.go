@@ -265,9 +265,9 @@ func (s *ListDustLiabilityService) Do(ctx context.Context) ([]*ListDustLiability
 }
 
 type ListDustLiability struct {
-	Asset          string  `json:"asset"`
-	Interest       string  `json:"interest"`
-	Principal      string  `json:"principal"`
-	LiabilityAsset string  `json:"liabilityAsset"`
-	LiabilityQty   float64 `json:"liabilityQty"`
+	Asset          string `json:"asset"`
+	Interest       string `json:"interest"`
+	Principal      string `json:"principal"`
+	LiabilityAsset string `json:"liabilityAsset"`
+	LiabilityQty   string `json:"liabilityQty"`
 }
