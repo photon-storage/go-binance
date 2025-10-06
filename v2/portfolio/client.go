@@ -437,3 +437,15 @@ func (c *Client) NewDustListService() *DustListService {
 	mc.Debug = c.Debug
 	return &DustListService{Ms: mc.NewListDustService()}
 }
+
+func (c *Client) NewConvertDustLiabilityService() *ConvertDustLiabilityService {
+	mc := binance.NewClient(c.APIKey, c.SecretKey)
+	mc.Debug = c.Debug
+	return &ConvertDustLiabilityService{Ms: mc.NewConvertDustLiabilityService()}
+}
+
+func (c *Client) NewListDustLiabilityService() *ListDustLiabilityService {
+	mc := binance.NewClient(c.APIKey, c.SecretKey)
+	mc.Debug = c.Debug
+	return &ListDustLiabilityService{Ms: mc.NewListDustLiabilityService()}
+}

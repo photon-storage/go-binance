@@ -848,6 +848,14 @@ func (c *Client) NewListDustService() *ListDustService {
 	return &ListDustService{c: c}
 }
 
+func (c *Client) NewListDustLiabilityService() *ListDustLiabilityService {
+	return &ListDustLiabilityService{c: c}
+}
+
+func (c *Client) NewConvertDustLiabilityService() *ConvertDustLiabilityService {
+	return &ConvertDustLiabilityService{c: c}
+}
+
 // NewTransferToSubAccountService transfer to subaccount service
 func (c *Client) NewTransferToSubAccountService() *TransferToSubAccountService {
 	return &TransferToSubAccountService{c: c}

@@ -42,3 +42,30 @@ func (s *DustListService) Do(
 ) (*binance.ListDustResponse, error) {
 	return s.Ms.Do(ctx)
 }
+
+type ConvertDustLiabilityService struct {
+	Ms *binance.ConvertDustLiabilityService
+}
+
+func (s *ConvertDustLiabilityService) Asset(asset []string) *ConvertDustLiabilityService {
+	s.Ms.Asset(asset)
+	return s
+}
+
+func (s *ConvertDustLiabilityService) Do(
+	ctx context.Context,
+	opts ...binance.RequestOption,
+) error {
+	return s.Ms.Do(ctx)
+}
+
+type ListDustLiabilityService struct {
+	Ms *binance.ListDustLiabilityService
+}
+
+func (s *ListDustLiabilityService) Do(
+	ctx context.Context,
+	opts ...binance.RequestOption,
+) ([]*binance.ListDustLiability, error) {
+	return s.Ms.Do(ctx)
+}
