@@ -11,7 +11,6 @@ package binance
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 )
 
@@ -211,32 +210,18 @@ func (s *ConvertDustLiabilityService) Asset(asset []string) *ConvertDustLiabilit
 	return s
 }
 
-func (s *ConvertDustLiabilityService) Do(ctx context.Context) (*ConvertDustLiabilityResponse, error) {
+func (s *ConvertDustLiabilityService) Do(ctx context.Context) error {
 	r := &request{
 		method:   http.MethodPost,
 		endpoint: "/sapi/v1/margin/exchange-small-liability",
 		secType:  secTypeSigned,
 	}
 	for _, a := range s.asset {
-		r.addParam("asset", a)
+		r.addParam("assetNames", a)
 	}
 
-	data, err := s.c.callAPI(ctx, r)
-	if err != nil {
-		return nil, err
-	}
-
-	fmt.Print("%v\n", string(data))
-
-	var res ConvertDustLiabilityResponse
-	if err := json.Unmarshal(data, &res); err != nil {
-		return nil, err
-	}
-
-	return &res, nil
-}
-
-type ConvertDustLiabilityResponse struct {
+	_, err := s.c.callAPI(ctx, r)
+	return err
 }
 
 type ListDustLiabilityService struct {
