@@ -310,14 +310,14 @@ func (c *Client) NewListOpenOrdersServiceUM() *ListOpenOrdersServiceUM {
 }
 
 // List liquidation orders
-func (c *Client) NewListLiquidationOrdersServiceCM() *ListLiquidationOrdersServiceCM {
+func (c *Client) NewListUserLiquidationOrdersServiceCM() *ListUserLiquidationOrdersServiceCM {
 	dc := c.newDeliveryClient()
-	return &ListLiquidationOrdersServiceCM{Ds: dc.NewListLiquidationOrdersService()}
+	return &ListUserLiquidationOrdersServiceCM{Ds: dc.NewListUserLiquidationOrdersService()}
 }
 
-func (c *Client) NewListLiquidationOrdersServiceUM() *ListLiquidationOrdersServiceUM {
+func (c *Client) NewListUserLiquidationOrdersServiceUM() *ListUserLiquidationOrdersServiceUM {
 	fc := c.newFutureClient()
-	return &ListLiquidationOrdersServiceUM{Fs: fc.NewListLiquidationOrdersService()}
+	return &ListUserLiquidationOrdersServiceUM{Fs: fc.NewListUserLiquidationOrdersService()}
 }
 
 // Change leverage

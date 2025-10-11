@@ -63,6 +63,9 @@ type UserDataEventType string
 // UserDataEventReasonType define reason type for user data event
 type UserDataEventReasonType string
 
+// ForceOrderCloseType define reason type for force order
+type ForceOrderCloseType string
+
 // Endpoints
 const (
 	baseApiMainUrl    = "https://dapi.binance.com"
@@ -157,6 +160,9 @@ const (
 	UserDataEventReasonTypeAssetTransfer       UserDataEventReasonType = "ASSET_TRANSFER"
 	UserDataEventReasonTypeOptionsPremiumFee   UserDataEventReasonType = "OPTIONS_PREMIUM_FEE"
 	UserDataEventReasonTypeOptionsSettleProfit UserDataEventReasonType = "OPTIONS_SETTLE_PROFIT"
+
+	ForceOrderCloseTypeLiquidation ForceOrderCloseType = "LIQUIDATION"
+	ForceOrderCloseTypeADL         ForceOrderCloseType = "ADL"
 
 	timestampKey  = "timestamp"
 	signatureKey  = "signature"
@@ -412,6 +418,10 @@ func (c *Client) NewListOpenOrdersService() *ListOpenOrdersService {
 // NewListOrdersService init listing orders service
 func (c *Client) NewListOrdersService() *ListOrdersService {
 	return &ListOrdersService{c: c}
+}
+
+func (c *Client) NewListUserLiquidationOrdersService() *ListUserLiquidationOrdersService {
+	return &ListUserLiquidationOrdersService{c: c}
 }
 
 // NewListLiquidationOrdersService init funding rate service
