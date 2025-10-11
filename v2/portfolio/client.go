@@ -309,6 +309,17 @@ func (c *Client) NewListOpenOrdersServiceUM() *ListOpenOrdersServiceUM {
 	return &ListOpenOrdersServiceUM{Fs: fc.NewListOpenOrdersService()}
 }
 
+// List liquidation orders
+func (c *Client) NewListUserLiquidationOrdersServiceCM() *ListUserLiquidationOrdersServiceCM {
+	dc := c.newDeliveryClient()
+	return &ListUserLiquidationOrdersServiceCM{Ds: dc.NewListUserLiquidationOrdersService()}
+}
+
+func (c *Client) NewListUserLiquidationOrdersServiceUM() *ListUserLiquidationOrdersServiceUM {
+	fc := c.newFutureClient()
+	return &ListUserLiquidationOrdersServiceUM{Fs: fc.NewListUserLiquidationOrdersService()}
+}
+
 // Change leverage
 func (c *Client) NewChangeLeverageServiceCM() *ChangeLeverageServiceCM {
 	dc := c.newDeliveryClient()

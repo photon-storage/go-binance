@@ -228,3 +228,27 @@ func (s *ListOpenOrdersServiceUM) Do(
 	opts = append(opts, futures.WithEndpoint("/papi/v1/um/openOrders"))
 	return s.Fs.Do(ctx, opts...)
 }
+
+type ListUserLiquidationOrdersServiceCM struct {
+	Ds *delivery.ListUserLiquidationOrdersService
+}
+
+func (s *ListUserLiquidationOrdersServiceCM) Do(
+	ctx context.Context,
+	opts ...delivery.RequestOption,
+) ([]*delivery.UserLiquidationOrder, error) {
+	opts = append(opts, delivery.WithEndpoint("/papi/v1/cm/forceOrders"))
+	return s.Ds.Do(ctx, opts...)
+}
+
+type ListUserLiquidationOrdersServiceUM struct {
+	Fs *futures.ListUserLiquidationOrdersService
+}
+
+func (s *ListUserLiquidationOrdersServiceUM) Do(
+	ctx context.Context,
+	opts ...futures.RequestOption,
+) ([]*futures.UserLiquidationOrder, error) {
+	opts = append(opts, futures.WithEndpoint("/papi/v1/um/forceOrders"))
+	return s.Fs.Do(ctx, opts...)
+}
