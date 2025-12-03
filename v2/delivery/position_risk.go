@@ -100,9 +100,10 @@ func (s *GetPositionAdlService) Do(ctx context.Context, opts ...RequestOption) (
 }
 
 type AdlQuantile struct {
-	Long  int `json:"LONG"`
-	Short int `json:"SHORT"`
-	Hedge int `json:"HEDGE"`
+	Long  int  `json:"LONG"`
+	Short int  `json:"SHORT"`
+	Both  int  `json:"BOTH"`
+	Hedge *int `json:"HEDGE"`
 }
 
 type PositionAdl struct {
