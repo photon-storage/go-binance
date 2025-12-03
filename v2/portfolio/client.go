@@ -363,6 +363,16 @@ func (c *Client) NewGetPositionRiskServiceUM() *GetPositionRiskServiceUM {
 	return &GetPositionRiskServiceUM{fs: fc.NewGetPositionRiskService()}
 }
 
+func (c *Client) NewGetPositionAdlServiceCM() *GetPositionAdlServiceCM {
+	dc := c.newDeliveryClient()
+	return &GetPositionAdlServiceCM{ds: dc.NewGetPositionAdlService()}
+}
+
+func (c *Client) NewGetPositionAdlServiceUM() *GetPositionAdlServiceUM {
+	fc := c.newFutureClient()
+	return &GetPositionAdlServiceUM{fs: fc.NewGetPositionAdlService()}
+}
+
 // Repay
 func (c *Client) NewFutureRepayService() *FutureRepayService {
 	return &FutureRepayService{c: c}

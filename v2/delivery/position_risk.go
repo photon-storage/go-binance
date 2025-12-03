@@ -65,3 +65,47 @@ type PositionRisk struct {
 	IsAutoAddMargin  string `json:"isAutoAddMargin"`
 	PositionSide     string `json:"positionSide"`
 }
+
+type GetPositionAdlService struct {
+	c      *Client
+	symbol string
+}
+
+// Symbol set symbol
+func (s *GetPositionAdlService) Symbol(symbol string) *GetPositionAdlService {
+	s.symbol = symbol
+	return s
+}
+
+// Do send request
+func (s *GetPositionAdlService) Do(ctx context.Context, opts ...RequestOption) (res []*PositionAdl, err error) {
+	r := &request{
+		method:   http.MethodGet,
+		endpoint: "/dapi/v1/adlQuantile",
+		secType:  secTypeSigned,
+	}
+	if s.symbol != "" {
+		r.setParam("symbol", s.symbol)
+	}
+	data, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return []*PositionAdl{}, err
+	}
+	res = make([]*PositionAdl, 0)
+	err = json.Unmarshal(data, &res)
+	if err != nil {
+		return []*PositionAdl{}, err
+	}
+	return res, nil
+}
+
+type AdlQuantile struct {
+	Long  int `json:"LONG"`
+	Short int `json:"SHORT"`
+	Hedge int `json:"HEDGE"`
+}
+
+type PositionAdl struct {
+	Symbol      string       `json:"symbol"`
+	AdlQuantile *AdlQuantile `json:"adlQuantile"`
+}
