@@ -491,6 +491,15 @@ func (c *Client) NewGetPositionRiskService() *GetPositionRiskService {
 	return &GetPositionRiskService{c: c}
 }
 
+// NewGetPositionRiskV3Service init getting position risk service
+func (c *Client) NewGetPositionRiskV3Service() *GetPositionRiskV3Service {
+	return &GetPositionRiskV3Service{c: c}
+}
+
+func (c *Client) NewGetPositionAdlService() *GetPositionAdlService {
+	return &GetPositionAdlService{c: c}
+}
+
 // NewGetPositionMarginHistoryService init getting position margin history service
 func (c *Client) NewGetPositionMarginHistoryService() *GetPositionMarginHistoryService {
 	return &GetPositionMarginHistoryService{c: c}

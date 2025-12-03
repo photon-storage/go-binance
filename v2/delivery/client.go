@@ -449,6 +449,10 @@ func (c *Client) NewGetPositionRiskService() *GetPositionRiskService {
 	return &GetPositionRiskService{c: c}
 }
 
+func (c *Client) NewGetPositionAdlService() *GetPositionAdlService {
+	return &GetPositionAdlService{c: c}
+}
+
 // NewChangeLeverageService init change leverage service
 func (c *Client) NewChangeLeverageService() *ChangeLeverageService {
 	return &ChangeLeverageService{c: c}
