@@ -4,6 +4,8 @@ import (
 	"context"
 	stdjson "encoding/json"
 	"net/http"
+
+	"github.com/photon-storage/go-binance/v2/common"
 )
 
 // CreateMarginOrderService create order
@@ -480,19 +482,19 @@ func (s *ListMarginOrdersService) Do(ctx context.Context, opts ...RequestOption)
 
 // CancelMarginOrderResponse define response of canceling order
 type CancelMarginOrderResponse struct {
-	Symbol                   string          `json:"symbol"`
-	OrigClientOrderID        string          `json:"origClientOrderId"`
-	OrderID                  string          `json:"orderId"`
-	ClientOrderID            string          `json:"clientOrderId"`
-	TransactTime             int64           `json:"transactTime"`
-	Price                    string          `json:"price"`
-	OrigQuantity             string          `json:"origQty"`
-	ExecutedQuantity         string          `json:"executedQty"`
-	CummulativeQuoteQuantity string          `json:"cummulativeQuoteQty"`
-	Status                   OrderStatusType `json:"status"`
-	TimeInForce              TimeInForceType `json:"timeInForce"`
-	Type                     OrderType       `json:"type"`
-	Side                     SideType        `json:"side"`
+	Symbol                   string             `json:"symbol"`
+	OrigClientOrderID        string             `json:"origClientOrderId"`
+	OrderID                  common.StringInt64 `json:"orderId"`
+	ClientOrderID            string             `json:"clientOrderId"`
+	TransactTime             int64              `json:"transactTime"`
+	Price                    string             `json:"price"`
+	OrigQuantity             string             `json:"origQty"`
+	ExecutedQuantity         string             `json:"executedQty"`
+	CummulativeQuoteQuantity string             `json:"cummulativeQuoteQty"`
+	Status                   OrderStatusType    `json:"status"`
+	TimeInForce              TimeInForceType    `json:"timeInForce"`
+	Type                     OrderType          `json:"type"`
+	Side                     SideType           `json:"side"`
 }
 
 // CreateMarginOCOService create a new OCO for a margin account
